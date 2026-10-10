@@ -2,7 +2,7 @@ package com.ismartcoding.plain.features.system
 
 import com.ismartcoding.plain.preferences.UserPrefs
 import com.ismartcoding.plain.enums.WebSettingsFeature
-import com.ismartcoding.plain.extensions.parseEpochMillis
+import com.ismartcoding.plain.lib.extensions.parseEpochMillis
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.lib.sendEvent
 import com.ismartcoding.plain.platform.isGranted

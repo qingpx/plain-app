@@ -31,6 +31,7 @@ kotlin {
             api(libs.kotlinx.serialization.json)
             api(libs.ktor.http)
             api(libs.runtime)
+            implementation(libs.kotlinx.datetime)
         }
 
         androidMain.dependencies {

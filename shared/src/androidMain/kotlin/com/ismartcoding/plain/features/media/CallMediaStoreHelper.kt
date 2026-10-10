@@ -12,8 +12,6 @@ import com.ismartcoding.plain.lib.extensions.getTimeValue
 import com.ismartcoding.plain.lib.extensions.map
 import com.ismartcoding.plain.lib.withIO
 import com.ismartcoding.plain.data.DCall
-import com.ismartcoding.plain.extensions.normalizeComparison
-import com.ismartcoding.plain.extensions.parseEpochMillis
 import com.ismartcoding.plain.helpers.QueryHelper
 
 object CallMediaStoreHelper : BaseContentHelper() {

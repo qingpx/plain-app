@@ -17,8 +17,6 @@ import com.ismartcoding.plain.data.DMediaBucketItemFact
 import com.ismartcoding.plain.data.TagRelationStub
 import com.ismartcoding.plain.enums.MediaType
 import com.ismartcoding.plain.enums.DataType
-import com.ismartcoding.plain.extensions.normalizeComparison
-import com.ismartcoding.plain.extensions.parseSizeToBytes
 import com.ismartcoding.plain.features.file.FileSortBy
 import com.ismartcoding.plain.features.file.toSortBy
 import com.ismartcoding.plain.features.media.BaseMediaContentHelper

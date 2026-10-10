@@ -1,4 +1,4 @@
-package com.ismartcoding.plain.extensions
+package com.ismartcoding.plain.lib.extensions
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
@@ -6,6 +6,14 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.toInstant
 
+/**
+ * Parses a timestamp written in any of the shapes seen in stored values and
+ * user input into epoch milliseconds, or null when unparseable:
+ *
+ * - all digits: 13+ digits are already milliseconds, otherwise seconds
+ * - `yyyy-MM-dd`: start of that day in [timeZone]
+ * - `yyyy-MM-ddTHH:mm[:ss]`: local time in [timeZone]
+ */
 fun String.parseEpochMillis(
     timeZone: TimeZone = TimeZone.currentSystemDefault(),
 ): Long? {
