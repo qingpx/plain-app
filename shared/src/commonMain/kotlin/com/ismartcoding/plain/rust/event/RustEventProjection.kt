@@ -6,7 +6,6 @@ import com.ismartcoding.plain.rust.host.*
 import com.ismartcoding.plain.rust.request.ContentApiSession
 import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.rust.request.RecoverDeletionsRequest
-import com.ismartcoding.plain.rust.request.RustCommand
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.lib.sendEvent
 import com.ismartcoding.plain.ui.models.NotesViewModel

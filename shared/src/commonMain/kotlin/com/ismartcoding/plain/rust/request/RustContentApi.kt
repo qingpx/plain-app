@@ -19,11 +19,21 @@ import kotlin.concurrent.Volatile
 /** A refusal or transport failure from the local Rust core. */
 class RustApiException(message: String, cause: Throwable? = null) : Exception(message, cause)
 
+/**
+ * Owns the local Rust core's lifecycle and the legacy JSON-RPC calls that have no
+ * GraphQL equivalent yet.
+ *
+ * GraphQL goes through [PlainRust], which owns the local-remote transport
+ * choice; these entry points delegate there and exist only so existing callers
+ * keep working while the remaining REST routes are migrated.
+ */
 object RustContentApi {
     private val lock = PlatformLock()
     private val client by lazy { createPlainHttpClient(PlainHttpClientSpec.Local()) }
     private val transferClient by lazy { createPlainHttpClient(PlainHttpClientSpec.Local(15 * 60)) }
     private val statusLock = Mutex()
+
+    /** Endpoint description of this device's own Rust server, for the REST calls below. */
     @Volatile private var localSession: ContentApiSession? = null
     private val syncStates = MutableStateFlow<Map<String, Pair<String, String>>>(emptyMap())
 
@@ -70,31 +80,18 @@ object RustContentApi {
         true
     }
 
-    suspend fun query(selection: String, session: ContentApiSession? = null): JsonObject = execute("query { $selection }", session)
-    suspend fun mutate(selection: String, session: ContentApiSession? = null, longRunning: Boolean = false): JsonObject = execute("mutation { $selection }", session, longRunning)
+    // ── GraphQL: delegated, the transport lives in PlainRust ─────────────
 
-    suspend fun graphql(document: String, variables: Map<String, JsonElement> = emptyMap(), session: ContentApiSession? = null): JsonObject = execute(document, session, variables = variables)
+    suspend fun query(selection: String, session: ContentApiSession? = null): JsonObject =
+        PlainRust.mainQuery(selection, session)
 
-    private suspend fun execute(document: String, session: ContentApiSession?, longRunning: Boolean = false, variables: Map<String, JsonElement> = emptyMap()): JsonObject =
-        decodeGraphqlResponse(PlainRust.request(RustCommand.Graphql(document, variables, session, longRunning, hostApi = true)).toString())
+    suspend fun mutate(selection: String, session: ContentApiSession? = null, longRunning: Boolean = false): JsonObject =
+        PlainRust.mainMutate(selection, session, longRunning)
 
-    internal suspend fun executeTransport(document: String, session: ContentApiSession?, longRunning: Boolean = false, variables: Map<String, JsonElement> = emptyMap(), operationName: String? = null, hostApi: Boolean = false): JsonObject {
-        val target = session ?: checkNotNull(localSession)
-        val body = JsonHelper.jsonEncode(GraphqlRequest(document, variables, operationName))
-        if (session == null || session == localSession) return JsonHelper.jsonDecode(PlainRust.graphql(body, hostApi))
-        val response = (if (longRunning) transferClient else client).postText("${target.baseUrl}/graphql", body, "application/json", target.headers())
-        response.use {
-            check(it.isOk()) { "Rust API returned HTTP ${it.status}" }
-            return JsonHelper.jsonDecode(it.bodyAsText())
-        }
-    }
+    suspend fun graphql(document: String, variables: Map<String, JsonElement> = emptyMap(), session: ContentApiSession? = null): JsonObject =
+        PlainRust.mainGraphql(document, variables, session)
 
-    private fun decodeGraphqlResponse(body: String): JsonObject {
-        val result = JsonHelper.jsonDecode<JsonObject>(body)
-        val errors = result["errors"] as? JsonArray
-        check(errors.isNullOrEmpty()) { errors?.joinToString { error -> error.jsonObject["message"]?.jsonPrimitive?.content ?: "Rust API error" } ?: "Rust API error" }
-        return result.getValue("data").jsonObject
-    }
+    // ── Legacy JSON-RPC: local HTTP until these routes are migrated ──────
 
     /**
      * Posts a JSON-RPC style body to the local Rust core.
