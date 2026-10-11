@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features.share
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.db.DMessageShare
 import com.ismartcoding.plain.lib.TimeHelper
 import io.ktor.utils.io.readAvailable

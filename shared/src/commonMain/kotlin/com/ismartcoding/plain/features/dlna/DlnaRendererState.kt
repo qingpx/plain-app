@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features.dlna
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.lib.coIO
 import com.ismartcoding.plain.lib.sendEvent

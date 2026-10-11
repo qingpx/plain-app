@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features.sms
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.db.DArchivedConversation
 import kotlin.time.Instant
 import kotlinx.serialization.json.*

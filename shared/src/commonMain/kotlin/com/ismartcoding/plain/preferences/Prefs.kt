@@ -1,8 +1,8 @@
 package com.ismartcoding.plain.preferences
 
-import com.ismartcoding.plain.rust.RustPrefsBridge
+import com.ismartcoding.plain.rust.bridge.RustPrefsBridge
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.platform.IODispatcher
 import com.ismartcoding.plain.platform.prefsFilePath

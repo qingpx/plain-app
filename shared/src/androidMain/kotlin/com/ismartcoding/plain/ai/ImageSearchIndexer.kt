@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.ai
 
-import com.ismartcoding.plain.api.string
+import com.ismartcoding.plain.rust.content.string
 import com.ismartcoding.plain.data.DImage
 import com.ismartcoding.plain.features.imageindex.ImageIndexHelper
 import com.ismartcoding.plain.lib.coIO

@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.platform
 
-import com.ismartcoding.plain.api.ContentApiSession
+import com.ismartcoding.plain.rust.request.ContentApiSession
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.lib.logcat.LogCat
 import kotlinx.coroutines.CoroutineScope

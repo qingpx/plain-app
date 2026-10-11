@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.chat.download
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.chat.peer.RustPeerStore
 import com.ismartcoding.plain.db.DMessageFile
 import com.ismartcoding.plain.db.DPeer

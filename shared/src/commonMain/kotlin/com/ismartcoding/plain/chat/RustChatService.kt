@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.chat
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.chat.data.ChatTarget
 import com.ismartcoding.plain.db.DChat
 import com.ismartcoding.plain.db.DMessageContent

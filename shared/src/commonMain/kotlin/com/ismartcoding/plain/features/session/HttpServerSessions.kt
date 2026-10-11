@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features.session
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.json.jsonObject
 import com.ismartcoding.plain.lib.JsonHelper

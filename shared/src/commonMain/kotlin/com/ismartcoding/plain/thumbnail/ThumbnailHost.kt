@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.thumbnail
 
 import kotlinx.serialization.json.*
-import com.ismartcoding.plain.api.ContentApiSession
+import com.ismartcoding.plain.rust.request.ContentApiSession
 import com.ismartcoding.plain.platform.*
 
 object ThumbnailHost {

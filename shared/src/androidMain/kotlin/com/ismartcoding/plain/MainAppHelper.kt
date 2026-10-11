@@ -29,7 +29,7 @@ object MainAppHelper {
 
     fun init(app: Application) {
         Prefs.load()
-        com.ismartcoding.plain.api.RustContentApi.start()
+        com.ismartcoding.plain.rust.request.RustContentApi.start()
         CrashHandler.install(app)
 
         SingletonImageLoader.setSafe { context -> newImageLoader(context) }

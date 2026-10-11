@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.tests
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.features.session.RustSessionStore
 import com.ismartcoding.plain.helpers.Base64Lenient
 import com.ismartcoding.plain.features.session.RustWebLogin

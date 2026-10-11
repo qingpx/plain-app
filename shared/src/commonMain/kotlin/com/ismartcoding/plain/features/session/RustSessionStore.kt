@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features.session
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.ui.models.VSession
 import com.ismartcoding.plain.enums.SessionType
 import com.ismartcoding.plain.helpers.Base64Lenient

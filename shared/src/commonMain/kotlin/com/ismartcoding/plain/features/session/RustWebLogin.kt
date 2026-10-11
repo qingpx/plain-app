@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features.session
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.events.HConfirmToAcceptLoginEvent
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.preferences.Prefs

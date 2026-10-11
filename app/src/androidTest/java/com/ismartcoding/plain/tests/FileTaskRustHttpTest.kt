@@ -3,7 +3,9 @@ package com.ismartcoding.plain.tests
 import android.os.Environment
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.ismartcoding.plain.api.*
+import com.ismartcoding.plain.rust.request.*
+import com.ismartcoding.plain.rust.content.*
+import com.ismartcoding.plain.rust.http.*
 import com.ismartcoding.plain.features.file.*
 import com.ismartcoding.plain.preferences.RustSystemState
 import kotlinx.coroutines.*

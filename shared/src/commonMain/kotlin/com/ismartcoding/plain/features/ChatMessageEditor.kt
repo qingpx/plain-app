@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.chat.RustChatStore
 import com.ismartcoding.plain.chat.ChatCacher
 import com.ismartcoding.plain.db.DChat

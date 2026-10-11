@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.preferences
 
-import com.ismartcoding.plain.api.ContentApiSession
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.ContentApiSession
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.lib.JsonHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.chat.peer
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.lib.logcat.LogCat
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.*

@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.platform
 
-import com.ismartcoding.plain.api.ApiResult
+import com.ismartcoding.plain.rust.http.ApiResult
 import com.ismartcoding.plain.db.DFeedEntry
 import com.ismartcoding.plain.features.feed.FeedEntryHelper
 import kotlinx.coroutines.CancellationException

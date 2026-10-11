@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.tests
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.chat.peer.*
 import com.ismartcoding.plain.db.DPeer
 import com.ismartcoding.plain.enums.PeerStatus

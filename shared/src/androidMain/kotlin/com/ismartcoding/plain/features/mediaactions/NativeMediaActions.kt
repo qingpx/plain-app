@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import com.ismartcoding.plain.api.string
+import com.ismartcoding.plain.rust.content.string
 import com.ismartcoding.plain.appContext
 import com.ismartcoding.plain.docs.DocMediaStoreHelper
 import com.ismartcoding.plain.enums.DataType

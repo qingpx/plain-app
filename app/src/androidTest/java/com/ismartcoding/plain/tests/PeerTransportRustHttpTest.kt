@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.tests
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.chat.peer.RustPeerStore
 import com.ismartcoding.plain.chat.peer.transport.PeerTransportHost
 import com.ismartcoding.plain.db.DPeer
@@ -45,7 +45,7 @@ class PeerTransportRustHttpTest {
                 put("action", "send"); put("id", peer.id); put("channel_id", "")
                 put("body", "synthetic request"); put("key", kotlin.io.encoding.Base64.encode(ByteArray(32) { 7 }))
             }) }
-            catch (_: com.ismartcoding.plain.api.RustApiException) { blocked = true }
+            catch (_: com.ismartcoding.plain.rust.request.RustApiException) { blocked = true }
             assertTrue(blocked)
             peer.ip = "127.0.0.1"
             RustPeerStore.update(peer)
@@ -57,12 +57,12 @@ class PeerTransportRustHttpTest {
             com.ismartcoding.plain.chat.peer.PeerTransportProjection.refresh()
             assertNull(com.ismartcoding.plain.chat.peer.PeerCacher.currentTransportMap.value[id])
             var duplicateRejected = false
-            try { finish(ticket, "connected") } catch (_: com.ismartcoding.plain.api.RustApiException) { duplicateRejected = true }
+            try { finish(ticket, "connected") } catch (_: com.ismartcoding.plain.rust.request.RustApiException) { duplicateRejected = true }
             assertTrue(duplicateRejected)
             val pending = begin(listOf("LAN")).getValue("ticket")
             RustPeerStore.delete(id)
             var deletedRejected = false
-            try { finish(pending, "unavailable") } catch (_: com.ismartcoding.plain.api.RustApiException) { deletedRejected = true }
+            try { finish(pending, "unavailable") } catch (_: com.ismartcoding.plain.rust.request.RustApiException) { deletedRejected = true }
             assertTrue(deletedRejected)
         } finally {
             RustPeerStore.delete(id)

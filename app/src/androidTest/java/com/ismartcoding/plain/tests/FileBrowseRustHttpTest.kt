@@ -2,7 +2,7 @@ package com.ismartcoding.plain.tests
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.features.file.FileSortBy
 import com.ismartcoding.plain.enums.PathKind
 import com.ismartcoding.plain.platform.listFilesInDir

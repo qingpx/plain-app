@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.discover
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.lib.JsonHelper
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.jsonObject

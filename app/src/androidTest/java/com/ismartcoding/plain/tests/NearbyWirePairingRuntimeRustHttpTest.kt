@@ -35,7 +35,7 @@ class NearbyWirePairingRuntimeRustHttpTest {
         assertEquals(id, RustNearbyWire.discoverReply(reply, RustBleServiceData.shortIdOf(id)).id)
         var rejected = false
         try { RustNearbyWire.discoverReply(reply, RustBleServiceData.shortIdOf("$id-other")) }
-        catch (_: com.ismartcoding.plain.api.RustApiException) { rejected = true }
+        catch (_: com.ismartcoding.plain.rust.request.RustApiException) { rejected = true }
         assertTrue(rejected)
     }
 

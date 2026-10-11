@@ -11,8 +11,4 @@ class HOpenAccessibilitySettingsEvent : HEvent()
 
 class HOpenWebSettingsEvent(val feature: WebSettingsFeature? = null) : HEvent()
 
-class HEnableImageSearchEvent : HEvent()
-class HDisableImageSearchEvent : HEvent()
-class HCancelImageModelDownloadEvent : HEvent()
-
 data class HDownloadTaskDoneEvent(val downloadTask: DownloadTask) : HEvent()

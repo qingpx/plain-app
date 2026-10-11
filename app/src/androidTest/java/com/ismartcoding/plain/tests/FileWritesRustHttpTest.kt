@@ -2,7 +2,7 @@ package com.ismartcoding.plain.tests
 
 import android.os.Environment
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import androidx.test.platform.app.InstrumentationRegistry
 import com.ismartcoding.plain.platform.createDirectory
 import com.ismartcoding.plain.platform.createFile

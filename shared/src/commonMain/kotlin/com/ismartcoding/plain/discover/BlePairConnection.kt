@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.discover
 
-import com.ismartcoding.plain.api.clientHeadersMap
+import com.ismartcoding.plain.rust.request.clientHeadersMap
 import com.ismartcoding.plain.ble.RustBleWire
 import com.ismartcoding.plain.ble.BleServices
 import com.ismartcoding.plain.ble.client.BleDeviceApi

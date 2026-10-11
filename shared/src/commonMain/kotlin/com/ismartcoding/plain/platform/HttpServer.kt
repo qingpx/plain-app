@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.platform
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.enums.HttpServerState
 import com.ismartcoding.plain.i18n.Res
 import com.ismartcoding.plain.i18n.http_server_failed

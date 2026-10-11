@@ -39,7 +39,7 @@ fun initIosApp() {
     initialized = true
 
     Prefs.load()
-    com.ismartcoding.plain.api.RustContentApi.start()
+    com.ismartcoding.plain.rust.request.RustContentApi.start()
 
     // Disk logging + HTTP request logging (debug=VERBOSE, release=WARN)
     initDiskLogging()

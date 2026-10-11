@@ -2,7 +2,7 @@ package com.ismartcoding.plain.chat
 
 import com.ismartcoding.plain.db.*
 import com.ismartcoding.plain.enums.ChatStatus
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.lib.JsonHelper
 import kotlinx.serialization.json.*
 import kotlin.time.Instant

@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.features.feed
 
-import com.ismartcoding.plain.api.RustContentApi
-import com.ismartcoding.plain.api.gql
+import com.ismartcoding.plain.rust.request.RustContentApi
+import com.ismartcoding.plain.rust.content.gql
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 

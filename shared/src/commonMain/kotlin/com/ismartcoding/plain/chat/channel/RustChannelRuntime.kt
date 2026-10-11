@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.chat.channel
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.chat.peer.GraphQLError
 import com.ismartcoding.plain.chat.peer.GraphQLResponse

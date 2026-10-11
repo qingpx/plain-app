@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.platform
 
 import com.ismartcoding.plain.preferences.*
-import com.ismartcoding.plain.api.OkHttpClientFactory
+import com.ismartcoding.plain.rust.http.OkHttpClientFactory
 import com.ismartcoding.plain.appContext
 import com.ismartcoding.plain.events.UpdateDownloadCompleteEvent
 import com.ismartcoding.plain.events.UpdateDownloadFailedEvent

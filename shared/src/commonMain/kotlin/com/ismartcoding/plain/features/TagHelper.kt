@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features
 
-import com.ismartcoding.plain.api.RustContentTags
+import com.ismartcoding.plain.rust.content.RustContentTags
 import com.ismartcoding.plain.data.TagRelationStub
 import com.ismartcoding.plain.db.DTag
 import com.ismartcoding.plain.db.DTagCount

@@ -23,11 +23,8 @@ import com.ismartcoding.plain.lib.ChannelEvent
 import com.ismartcoding.plain.lib.sendEvent
 import com.ismartcoding.plain.platform.Permission
 import com.ismartcoding.plain.platform.audioPause
-import com.ismartcoding.plain.platform.cancelImageModelDownload
 import com.ismartcoding.plain.platform.cancelUpdateDownloadAsync
-import com.ismartcoding.plain.platform.disableImageSearchAsync
 import com.ismartcoding.plain.platform.downloadUpdateAsync
-import com.ismartcoding.plain.platform.enableImageSearchAsync
 import com.ismartcoding.plain.platform.isBluetoothAdvertiseReady
 import com.ismartcoding.plain.platform.restartAudioIfPlaying
 import com.ismartcoding.plain.platform.sendChatMessageNotification
@@ -215,18 +212,6 @@ object AppEvents {
                         if (isBluetoothAdvertiseReady()) {
                             PairingTransport.startAdvertising()
                         }
-                    }
-
-                    is HEnableImageSearchEvent -> {
-                        coIO { enableImageSearchAsync() }
-                    }
-
-                    is HDisableImageSearchEvent -> {
-                        coIO { disableImageSearchAsync() }
-                    }
-
-                    is HCancelImageModelDownloadEvent -> {
-                        cancelImageModelDownload()
                     }
 
                     is DownloadUpdateEvent -> {

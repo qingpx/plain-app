@@ -1,7 +1,9 @@
 package com.ismartcoding.plain.tests
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.ismartcoding.plain.api.*
+import com.ismartcoding.plain.rust.request.*
+import com.ismartcoding.plain.rust.content.*
+import com.ismartcoding.plain.rust.http.*
 import com.ismartcoding.plain.audio.DPlaylistAudio
 import com.ismartcoding.plain.features.audio.*
 import com.ismartcoding.plain.features.file.FileSortBy

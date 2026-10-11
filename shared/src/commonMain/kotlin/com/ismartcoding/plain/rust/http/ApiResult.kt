@@ -1,0 +1,16 @@
+package com.ismartcoding.plain.rust.http
+
+import com.ismartcoding.plain.i18n.*
+import com.ismartcoding.plain.platform.PlainResponse
+import kotlinx.coroutines.runBlocking
+import org.jetbrains.compose.resources.getString as getComposeString
+
+data class ApiResult(val response: PlainResponse?, val exception: Throwable? = null, val success: Boolean? = null) {
+    fun isOk(): Boolean {
+        return success ?: (response?.isOk() == true)
+    }
+
+    fun errorMessage(): String {
+        return exception?.toString() ?: response?.toString() ?: runBlocking { getComposeString(Res.string.unknown) }
+    }
+}

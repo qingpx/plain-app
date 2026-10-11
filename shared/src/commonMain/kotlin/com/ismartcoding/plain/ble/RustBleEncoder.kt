@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.ble
 
-import com.ismartcoding.plain.rust.RustBleBridge
+import com.ismartcoding.plain.rust.bridge.RustBleBridge
 
 import com.ismartcoding.plain.platform.PlatformLock
 

@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.chat
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import kotlinx.serialization.json.*
 
 internal suspend fun callChatStore(action: String, fields: JsonObjectBuilder.() -> Unit = {}): JsonElement =

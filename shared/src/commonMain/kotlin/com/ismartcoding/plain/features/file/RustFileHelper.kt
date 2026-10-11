@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features.file
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import io.ktor.http.Url
 import io.ktor.http.decodeURLPart
 import kotlinx.serialization.json.*

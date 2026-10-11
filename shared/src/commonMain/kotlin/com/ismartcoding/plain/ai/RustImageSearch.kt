@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.ai
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.data.DImage
 import com.ismartcoding.plain.features.file.FileSortBy
 import com.ismartcoding.plain.features.system.MediaFacts

@@ -78,7 +78,7 @@ class ChannelReceiveRustHttpTest {
         val publicKey = Base64.decode(com.ismartcoding.plain.helpers.SignatureHelper.getRawPublicKeyBase64Async())
         val channel = RustChannelStore.create("中文 $prefix")
         try {
-            com.ismartcoding.plain.api.RustContentApi.postJsonOrThrow("chat/channel", buildJsonObject {
+            com.ismartcoding.plain.rust.request.RustContentApi.postJsonOrThrow("chat/channel", buildJsonObject {
                 put("action", "send"); put("id", channel.id)
                 put("message_type", ChannelSystemMessageType.UPDATE.name); put("target", "")
             }, longRunning = true)
@@ -113,7 +113,7 @@ class ChannelReceiveRustHttpTest {
     }
 
     private suspend fun receive(from: String, type: ChannelSystemMessageType, payload: String): Boolean {
-        val result = com.ismartcoding.plain.api.RustContentApi.postJson("chat/store", buildJsonObject {
+        val result = com.ismartcoding.plain.rust.request.RustContentApi.postJson("chat/store", buildJsonObject {
             put("action", "receiveChannel"); put("actor", TempData.clientId)
             put("from_id", from); put("message_type", type.name); put("payload", payload)
         }).getOrNull()?.get("result")?.jsonObject ?: return false

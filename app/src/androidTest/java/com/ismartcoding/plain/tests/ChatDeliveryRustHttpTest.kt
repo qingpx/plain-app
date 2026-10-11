@@ -43,7 +43,7 @@ class ChatDeliveryRustHttpTest {
             assertEquals(ChatStatus.SENT, savedGroup.status)
             RustChannelStore.action(channel.id, "invite", peer = id)
             var rejected = false
-            try { ChatManager.deliver(group.id, listOf(id)) } catch (_: com.ismartcoding.plain.api.RustApiException) { rejected = true }
+            try { ChatManager.deliver(group.id, listOf(id)) } catch (_: com.ismartcoding.plain.rust.request.RustApiException) { rejected = true }
             assertTrue(rejected)
             assertEquals(ChatStatus.SENT, RustChatStore.getById(group.id)!!.status)
         } finally {

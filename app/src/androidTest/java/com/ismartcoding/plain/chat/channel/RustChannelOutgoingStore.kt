@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.chat.channel
 
 import com.ismartcoding.plain.TempData
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.db.DChatChannel
 import com.ismartcoding.plain.enums.ChannelSystemMessageType
 import com.ismartcoding.plain.platform.getDeviceType

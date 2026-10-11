@@ -1,7 +1,7 @@
 package com.ismartcoding.plain.platform
 
-import com.ismartcoding.plain.api.OkHttpClientFactory
-import com.ismartcoding.plain.api.httpLogSink
+import com.ismartcoding.plain.rust.http.OkHttpClientFactory
+import com.ismartcoding.plain.rust.http.httpLogSink
 import io.ktor.utils.io.ByteChannel
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.close

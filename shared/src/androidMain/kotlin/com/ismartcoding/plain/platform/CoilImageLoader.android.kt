@@ -36,7 +36,7 @@ import coil3.svg.isSvg
 import coil3.toAndroidUri
 import coil3.video.VideoFrameDecoder
 import com.ismartcoding.plain.activityManager
-import com.ismartcoding.plain.api.OkHttpClientFactory
+import com.ismartcoding.plain.rust.http.OkHttpClientFactory
 import kotlin.math.roundToInt
 
 /**

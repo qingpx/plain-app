@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.features.feed
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.platform.NetworkType
 import com.ismartcoding.plain.platform.getNetworkType
 import com.ismartcoding.plain.preferences.UserPrefs

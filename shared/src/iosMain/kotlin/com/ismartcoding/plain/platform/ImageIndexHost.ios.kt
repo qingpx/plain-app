@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.platform
 
-import com.ismartcoding.plain.api.string
+import com.ismartcoding.plain.rust.content.string
 import com.ismartcoding.plain.lib.JsonHelper
 import kotlinx.serialization.json.*
 

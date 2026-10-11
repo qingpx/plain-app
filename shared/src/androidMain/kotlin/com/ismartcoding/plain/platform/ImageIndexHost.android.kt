@@ -5,7 +5,7 @@ import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.ai.ImageIndexManager
 import com.ismartcoding.plain.ai.ImageIndexCatalog
 import com.ismartcoding.plain.ai.ImageSearchIndexer
-import com.ismartcoding.plain.api.string
+import com.ismartcoding.plain.rust.content.string
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 

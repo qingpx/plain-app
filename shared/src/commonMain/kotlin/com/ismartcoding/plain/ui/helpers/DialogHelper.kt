@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.ui.helpers
 
-import com.ismartcoding.plain.api.ApiResult
+import com.ismartcoding.plain.rust.http.ApiResult
 import com.ismartcoding.plain.events.ConfirmDialogEvent
 import com.ismartcoding.plain.events.LoadingDialogEvent
 import com.ismartcoding.plain.lib.coIO

@@ -20,7 +20,7 @@ import com.ismartcoding.plain.lib.extensions.queryOpenableFileName
 import com.ismartcoding.plain.platform.StreamSink
 import android.net.Uri
 import androidx.core.net.toUri
-import com.ismartcoding.plain.api.OkHttpClientFactory
+import com.ismartcoding.plain.rust.http.OkHttpClientFactory
 import com.ismartcoding.plain.data.DownloadFileItem
 import com.ismartcoding.plain.enums.DataType
 import com.ismartcoding.plain.features.file.FileSortBy

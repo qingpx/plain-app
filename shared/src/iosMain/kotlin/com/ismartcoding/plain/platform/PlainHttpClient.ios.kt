@@ -2,7 +2,7 @@
 
 package com.ismartcoding.plain.platform
 
-import com.ismartcoding.plain.api.httpLogSink
+import com.ismartcoding.plain.rust.http.httpLogSink
 import com.ismartcoding.plain.lib.toNSData
 import kotlinx.cinterop.readBytes
 import kotlinx.coroutines.CoroutineScope

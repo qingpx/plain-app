@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.platform
 
-import com.ismartcoding.plain.api.HttpApiTimeout
+import com.ismartcoding.plain.rust.http.HttpApiTimeout
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readAvailable
 import kotlinx.coroutines.channels.ReceiveChannel

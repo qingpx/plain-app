@@ -1,6 +1,6 @@
 package com.ismartcoding.plain.chat.peer
 
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.chat.peer.transport.PeerTransportType
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

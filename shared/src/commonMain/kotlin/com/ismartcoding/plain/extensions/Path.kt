@@ -25,5 +25,5 @@ fun String.getFinalPath(): String {
  */
 fun String.resolveAppFileRealPath(): String {
     if (this.isEmpty() || this.startsWith("/")) return this
-    return com.ismartcoding.plain.api.RustContentApi.directory + "/" + this
+    return com.ismartcoding.plain.rust.request.RustContentApi.directory + "/" + this
 }

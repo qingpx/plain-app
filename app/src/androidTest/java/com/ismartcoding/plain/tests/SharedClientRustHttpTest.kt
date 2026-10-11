@@ -3,7 +3,7 @@ package com.ismartcoding.plain.tests
 import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.ismartcoding.plain.api.RustContentApi
+import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.chat.RustChatStore
 import com.ismartcoding.plain.db.*
 import com.ismartcoding.plain.features.share.*
