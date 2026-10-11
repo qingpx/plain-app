@@ -2,6 +2,7 @@ package com.ismartcoding.plain.rust.request
 
 import com.ismartcoding.plain.rust.PlainRust
 import com.ismartcoding.plain.rust.content.gql
+import com.ismartcoding.plain.TempData
 import com.ismartcoding.plain.lib.JsonHelper
 
 import com.ismartcoding.plain.events.*
@@ -59,7 +60,11 @@ object RustContentApi {
         val ports = JsonHelper.jsonDecode<RustHttpServerResult>(PlainRust.initialize(
             "$directory/plain-content.db", token, JsonHelper.jsonEncode(config)))
         check(ports.errorCode.isEmpty()) { ports.error }
-        localSession = ContentApiSession("http://127.0.0.1:${ports.httpPort}", "local", token)
+        localSession = ContentApiSession(
+            "http://127.0.0.1:${ports.httpPort}",
+            TempData.clientId,
+            SessionAuth.Bearer(token),
+        )
         if (!collectorsStarted) {
             PlainRust.start { checkNotNull(localSession) }
             collectorsStarted = true

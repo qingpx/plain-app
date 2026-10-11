@@ -124,6 +124,13 @@ object PlainRust {
             JsonHelper.jsonDecode(RustCoreBridge.graphql(JsonHelper.jsonEncode(GraphqlRequest(document, variables, operationName)), HOST_API))
         }
 
+    /**
+     * Remote GraphQL authenticates by mode, not by header alone: a paired device
+     * sends `c-id` and an XChaCha20 body with no `Authorization`, while a web
+     * console `CUSTOM` session sends a Bearer header and a plaintext body.
+     * Kotlin has no XChaCha20 yet, so the paired mode stays closed rather than
+     * posting a body the endpoint would reject.
+     */
     private suspend fun remote(
         document: String,
         variables: Map<String, JsonElement>,
@@ -132,6 +139,9 @@ object PlainRust {
         session: ContentApiSession,
         longRunning: Boolean,
     ): JsonObject {
+        check(session.sessionKey == null) {
+            "A paired session needs the XChaCha20 envelope, which the Kotlin side cannot produce yet"
+        }
         val body = JsonHelper.jsonEncode(GraphqlRequest(document, variables, operationName))
         val response = (if (longRunning) transferClient else client)
             .postText("${session.baseUrl}${endpoint.path}", body, "application/json", session.headers())
