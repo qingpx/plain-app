@@ -1,11 +1,10 @@
 package com.ismartcoding.plain.preferences
 
-import com.ismartcoding.plain.rust.bridge.RustPrefsBridge
-
-import com.ismartcoding.plain.rust.request.RustContentApi
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.platform.IODispatcher
 import com.ismartcoding.plain.platform.prefsFilePath
+import com.ismartcoding.plain.rust.bridge.RustPrefsBridge
+import com.ismartcoding.plain.rust.request.RustContentApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
@@ -14,7 +13,19 @@ object Prefs {
     fun load() {
         val directory = prefsFilePath().substringBeforeLast('/')
         RustPrefsBridge.open("$directory/system_prefs.json", "$directory/user_prefs.json")
+        PrefStore.load()
     }
+
+    /**
+     * Re-reads user and system settings from Rust. Startup, a local write
+     * echoed back as `PREFS_UPDATED`, and a change made by a remote client all
+     * converge here, so the App never has to tell those cases apart.
+     */
+    suspend fun refresh() {
+        PrefStore.refresh()
+        SystemPrefsClient.local.refresh()
+    }
+
     val systemSnapshot: Map<String, JsonElement> get() = runBlocking(IODispatcher) {
         RustContentApi.query("systemPrefs").getValue("systemPrefs").jsonObject
     }

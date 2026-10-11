@@ -24,8 +24,8 @@ class SessionMigrationRustHttpTest {
         val id = "session-fixture-${UUID.randomUUID()}"
         var pendingId = ""
         try {
-            UserPrefs.service.set(true)
-            UserPrefs.desktopAccess.set(true)
+            UserPrefs.service.value = true
+            UserPrefs.desktopAccess.value = true
             RustSystemState.setTwoFactor(true)
             val client = generateECDHKeyPair()
             val digest = sha512(RustSystemState.state.value.password.encodeToByteArray())
@@ -71,8 +71,8 @@ class SessionMigrationRustHttpTest {
             if (pendingId.isNotEmpty()) RustWebLogin.cancel(pendingId)
             RustSessionStore.delete(id)
             RustSystemState.setTwoFactor(oldTwoFactor)
-            UserPrefs.desktopAccess.set(oldDesktop)
-            UserPrefs.service.set(oldService)
+            UserPrefs.desktopAccess.value = oldDesktop
+            UserPrefs.service.value = oldService
         }
     }
 }

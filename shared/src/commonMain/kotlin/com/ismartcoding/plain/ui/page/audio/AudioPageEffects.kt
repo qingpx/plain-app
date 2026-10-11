@@ -33,7 +33,7 @@ internal fun AudioPageEffects(
     val sharedFlow = Channel.sharedFlow
     val reloadAfterGrant: () -> Unit = {
         scope.launch(Dispatchers.Default) {
-            audioVM.sortBy.value = UserPrefs.audioSortByValue()
+            audioVM.sortBy.value = UserPrefs.audioSortBy.value
             audioVM.loadAsync(tagsVM)
             audioQueueVM.loadAsync()
             mediaFoldersVM.loadAsync()

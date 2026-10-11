@@ -19,7 +19,7 @@ class NotificationSettingsViewModel : ViewModel() {
     private val _allAppsFlow = MutableStateFlow<List<DNotificationApp>>(emptyList())
     val allAppsFlow: StateFlow<List<DNotificationApp>> = _allAppsFlow
 
-    var filterData = mutableStateOf(UserPrefs.notificationFilterValue())
+    var filterData = mutableStateOf(UserPrefs.notificationFilter.value)
     var isLoading = mutableStateOf(true)
     var showAppSelector = mutableStateOf(false)
     var appsLoaded = mutableStateOf(false)
@@ -30,7 +30,7 @@ class NotificationSettingsViewModel : ViewModel() {
 
     suspend fun loadDataAsync() {
         try {
-            filterData.value = UserPrefs.notificationFilterValue()
+            filterData.value = UserPrefs.notificationFilter.value
             val apps = mutableListOf<DNotificationApp>()
             withIO {
                 filterData.value.apps.forEach { packageName ->
@@ -71,7 +71,7 @@ class NotificationSettingsViewModel : ViewModel() {
 
     suspend fun removeAppAsync(packageName: String) {
         UserPrefs.toggleNotificationApp(packageName)
-        filterData.value = UserPrefs.notificationFilterValue()
+        filterData.value = UserPrefs.notificationFilter.value
         loadSelectedApps()
     }
 
@@ -79,13 +79,13 @@ class NotificationSettingsViewModel : ViewModel() {
         packageNames.forEach { packageName ->
             UserPrefs.toggleNotificationApp(packageName)
         }
-        filterData.value = UserPrefs.notificationFilterValue()
+        filterData.value = UserPrefs.notificationFilter.value
         loadSelectedApps()
     }
 
     suspend fun clearAllAsync() {
         UserPrefs.clearNotificationApps()
-        filterData.value = UserPrefs.notificationFilterValue()
+        filterData.value = UserPrefs.notificationFilter.value
         _selectedAppsFlow.value = emptyList()
     }
 

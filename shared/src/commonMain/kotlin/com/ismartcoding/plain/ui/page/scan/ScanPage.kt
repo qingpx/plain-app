@@ -123,10 +123,10 @@ fun ScanPage(navController: NavHostController) {
             },
             onScanResult = { value, onDismiss ->
                 scope.launch {
-                    val results = UserPrefs.scanHistoryValue().toMutableList()
+                    val results = UserPrefs.scanHistory.value.toMutableList()
                     results.removeAll { it == value }
                     results.add(0, value)
-                    UserPrefs.setScanHistory(results)
+                    UserPrefs.scanHistory.value = results
                 }
                 scanResult = value
                 resumeScannerAfterResult = onDismiss

@@ -59,7 +59,7 @@ object MainAppHelper {
 
         coIO {
             initCommonPreferences()
-            setDarkMode(DarkTheme.parse(UserPrefs.darkTheme.value))
+            setDarkMode(UserPrefs.darkTheme.value)
             if (UserPrefs.service.value && PlugInControlReceiver.isUSBConnected(app)) {
                 sendEvent(PowerConnectedEvent())
             }

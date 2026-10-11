@@ -68,7 +68,7 @@ fun SaveToSheet(
     var showFolderPick by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        recentDirs = UserPrefs.recentSaveDirsValue()
+        recentDirs = UserPrefs.recentSaveDirs.value
     }
 
     fun useDirectory(dir: String) {

@@ -316,7 +316,7 @@ fun ChatPage(
                     onValueChange = {
                         inputValue = it
                         scope.launch(Dispatchers.Default) {
-                            UserPrefs.chatInputText.set(it)
+                            UserPrefs.chatInputText.value = it
                         }
                     },
                     onSend = {
@@ -324,7 +324,7 @@ fun ChatPage(
                         scope.launch {
                             chatVM.sendTextMessage(inputValue)
                             inputValue = ""
-                            UserPrefs.chatInputText.set("")
+                            UserPrefs.chatInputText.value = ""
                         }
                     },
                     onShareFolder = { showFolderShareSheet = true })

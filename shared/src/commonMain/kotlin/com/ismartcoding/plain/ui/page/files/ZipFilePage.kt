@@ -81,7 +81,7 @@ fun ZipFilePage(
             val type = if (path.startsWith(appDataPath)) FilesType.APP else FilesType.INTERNAL_STORAGE
             val rootPath = when (type) { FilesType.APP -> appDataPath; else -> getInternalStoragePath() }
             filesVM.initSelectedPath(rootPath, type, zipVirtualRoot, zipVirtualRoot)
-            filesVM.sortBy.value = UserPrefs.fileSortByValue()
+            filesVM.sortBy.value = UserPrefs.fileSortBy.value
             filesVM.loadAsync()
             audioQueueVM.loadAsync()
         }
@@ -108,7 +108,7 @@ fun ZipFilePage(
 
     if (filesVM.showSortDialog.value) {
         FileSortDialog(filesVM.sortBy, onSelected = {
-            scope.launch(Dispatchers.Default) { UserPrefs.setFileSortBy(it); filesVM.sortBy.value = it; filesVM.loadAsync() }
+            scope.launch(Dispatchers.Default) { UserPrefs.fileSortBy.value = it; filesVM.sortBy.value = it; filesVM.loadAsync() }
         }, onDismiss = { filesVM.showSortDialog.value = false })
     }
 
@@ -143,7 +143,7 @@ fun ZipFilePage(
                                 dismiss()
                                 scope.launch(Dispatchers.Default) {
                                     val nv = !showHiddenFiles
-                                    UserPrefs.showHiddenFiles.set(nv)
+                                    UserPrefs.showHiddenFiles.value = nv
                                     showHiddenFiles = nv; filesVM.loadAsync()
                                 }
                             })

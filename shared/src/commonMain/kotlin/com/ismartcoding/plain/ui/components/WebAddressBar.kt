@@ -118,7 +118,7 @@ fun WebAddressBar(
                     UiRes.drawable.ui_drawable_chevron_down
             ),
             onClick = {
-                scope.launch { UserPrefs.webAddressBarExpanded.set(!expanded.value) }
+                scope.launch { UserPrefs.webAddressBarExpanded.value = !expanded.value }
             },
         )
     }
@@ -139,9 +139,8 @@ fun WebAddressBar(
                         hostname = newHostname
                     }
                     if (portChanged) {
-                        val patch = if (isHttps) com.ismartcoding.plain.preferences.UserSettingsPatch(httpsPort = newPort)
-                            else com.ismartcoding.plain.preferences.UserSettingsPatch(httpPort = newPort)
-                        com.ismartcoding.plain.preferences.PreferencesClient.local.patchUser(patch)
+                        if (isHttps) com.ismartcoding.plain.preferences.UserPrefs.httpsPort.value = newPort
+                        else com.ismartcoding.plain.preferences.UserPrefs.httpPort.value = newPort
                     }
                     if (hostnameChanged || portChanged) restartServer()
                 }

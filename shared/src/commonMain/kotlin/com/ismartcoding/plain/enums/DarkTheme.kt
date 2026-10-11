@@ -23,16 +23,11 @@ enum class DarkTheme(val value: Int) {
     companion object {
         @Composable
         @ReadOnlyComposable
-        fun isDarkTheme(value: Int): Boolean =
-            when (value) {
-                UseDeviceTheme.value -> isSystemInDarkTheme()
-                ON.value -> true
-                OFF.value -> false
-                else -> isSystemInDarkTheme()
+        fun isDarkTheme(theme: DarkTheme): Boolean =
+            when (theme) {
+                UseDeviceTheme -> isSystemInDarkTheme()
+                ON -> true
+                OFF -> false
             }
-
-        fun parse(value: Int): DarkTheme {
-            return entries.find { it.value == value } ?: UseDeviceTheme
-        }
     }
 }

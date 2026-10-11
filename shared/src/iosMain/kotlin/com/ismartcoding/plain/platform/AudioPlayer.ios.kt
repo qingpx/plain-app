@@ -123,7 +123,7 @@ private object AVPlayerAudioPlayer : AudioPlayer {
 
     override fun setPlaybackSpeed(speed: Float) {
         scope.launch {
-            UserPrefs.audioPlaybackSpeed.set(speed)
+            UserPrefs.audioPlaybackSpeed.value = speed
             val p = player ?: return@launch
             if (playWhenReady) avPlayerSetRate(p as NSObject, speed)
         }

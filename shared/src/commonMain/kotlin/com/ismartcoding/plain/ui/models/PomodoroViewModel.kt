@@ -22,18 +22,18 @@ class PomodoroViewModel : ViewModel() {
     var isRunning = mutableStateOf(false)
     var adjustJob = mutableStateOf<Job?>(null)
     var isPaused = mutableStateOf(false)
-    var timeLeft = mutableIntStateOf(UserPrefs.pomodoroSettingsValue().workDurationMin * 60)
+    var timeLeft = mutableIntStateOf(UserPrefs.pomodoroSettings.value.workDurationMin * 60)
     var completedCount = mutableIntStateOf(0)
     var currentRound = mutableIntStateOf(1)
-    var settings = mutableStateOf(UserPrefs.pomodoroSettingsValue())
+    var settings = mutableStateOf(UserPrefs.pomodoroSettings.value)
 
     val showSettings = mutableStateOf(false)
     var todayRecord = mutableStateOf<DPomodoroItem?>(null)
 
-    private var totalSeconds = UserPrefs.pomodoroSettingsValue().workDurationMin * 60
+    private var totalSeconds = UserPrefs.pomodoroSettings.value.workDurationMin * 60
 
     suspend fun loadAsync() {
-        settings.value = UserPrefs.pomodoroSettingsValue()
+        settings.value = UserPrefs.pomodoroSettings.value
         PomodoroHelper.configureDay(force = true)
         refreshAsync()
         com.ismartcoding.plain.features.PomodoroHost.refresh()

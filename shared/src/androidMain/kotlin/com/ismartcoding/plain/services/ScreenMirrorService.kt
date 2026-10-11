@@ -175,6 +175,6 @@ class ScreenMirrorService : LifecycleService() {
     companion object {
         @Volatile
         var instance: ScreenMirrorService? = null
-        val qualityData get() = com.ismartcoding.plain.preferences.UserPrefs.screenMirrorQualityValue()
+        val qualityData get() = com.ismartcoding.plain.preferences.UserPrefs.screenMirrorQuality.value
     }
 }

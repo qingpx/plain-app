@@ -35,7 +35,7 @@ class GlobalSearchViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            recentQueries.value = UserPrefs.recentSearchesValue()
+            recentQueries.value = UserPrefs.recentSearches.value
         }
     }
 

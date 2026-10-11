@@ -38,10 +38,10 @@ class PeerStatusRustHttpTest {
         }
         try {
             RustPeerStore.insert(peer)
-            UserPrefs.service.set(true)
+            UserPrefs.service.value = true
             stopHttpEngineAsync()
-            UserPrefs.httpPort.set(0)
-            UserPrefs.httpsPort.set(0)
+            UserPrefs.httpPort.value = 0
+            UserPrefs.httpsPort.value = 0
             startHttpEngineAsync()
             assertTrue(com.ismartcoding.plain.platform.checkHttpServerAsync())
             assertTrue(snapshot().getValue("outgoing").jsonObject.getValue("started").jsonPrimitive.boolean)
@@ -88,9 +88,9 @@ class PeerStatusRustHttpTest {
         } finally {
             tasks.forEach { it.cancelAndJoin() }
             stopHttpEngineAsync()
-            UserPrefs.httpPort.set(http)
-            UserPrefs.httpsPort.set(https)
-            UserPrefs.service.set(service)
+            UserPrefs.httpPort.value = http
+            UserPrefs.httpsPort.value = https
+            UserPrefs.service.value = service
             RustPeerStore.remove(id)
             PeerStatusProjection.refresh()
             client.close()

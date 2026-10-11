@@ -31,7 +31,7 @@ object PomodoroHost {
                     val (state, completed) = PomodoroHelper.tick()
                     sendEvent(HPomodoroChangedEvent(state))
                     if (completed != null) {
-                        val settings = UserPrefs.pomodoroSettingsValue()
+                        val settings = UserPrefs.pomodoroSettings.value
                         showPomodoroNotification(completed, state.state)
                         playPomodoroCompletionSound(settings)
                     }

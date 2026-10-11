@@ -51,7 +51,7 @@ fun HomeFeaturesSelectionPage(navController: NavHostController) {
     fun persist(newList: List<String>) {
         enabledIds = newList
         scope.launch(Dispatchers.Default) {
-            UserPrefs.setHomeFeatures(UserPrefs.formatFeatures(newList))
+            UserPrefs.homeFeatures.value = UserPrefs.formatFeatures(newList)
         }
     }
 

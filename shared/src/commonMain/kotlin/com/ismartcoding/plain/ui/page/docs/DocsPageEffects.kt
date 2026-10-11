@@ -34,7 +34,7 @@ internal fun DocsPageEffects(
     val sharedFlow = Channel.sharedFlow
     val reloadAfterGrant: () -> Unit = {
         scope.launch(Dispatchers.Default) {
-            docsVM.sortBy.value = UserPrefs.docSortByValue()
+            docsVM.sortBy.value = UserPrefs.docSortBy.value
             tagsVM.loadAsync()
             mediaFoldersVM.loadAsync()
             docsVM.loadAsync(tagsVM)

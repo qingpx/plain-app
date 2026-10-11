@@ -166,7 +166,7 @@ fun AudioArtistPage(
         scrollToTop = { scope.launch { scrollState.scrollToItem(0) } },
         onSortSelected = { sortBy ->
             scope.launch {
-                UserPrefs.setAudioSortBy(sortBy)
+                UserPrefs.audioSortBy.value = sortBy
                 audioVM.sortBy.value = sortBy
             }
         },

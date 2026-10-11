@@ -37,21 +37,21 @@ class FeedSettingsViewModel : ViewModel() {
     fun setAutoRefresh(value: Boolean) {
         autoRefresh.value = value
         viewModelScope.launchSafe {
-            UserPrefs.feedAutoRefresh.set(value)
+            UserPrefs.feedAutoRefresh.value = value
         }
     }
 
     fun setAutoRefreshInterval(value: Int) {
         autoRefreshInterval.value = value
         viewModelScope.launchSafe {
-            UserPrefs.feedAutoRefreshInterval.set(value)
+            UserPrefs.feedAutoRefreshInterval.value = value
         }
     }
 
     fun setAutoRefreshOnlyWifi(value: Boolean) {
         autoRefreshOnlyWifi.value = value
         viewModelScope.launchSafe {
-            UserPrefs.feedAutoRefreshOnlyWifi.set(value)
+            UserPrefs.feedAutoRefreshOnlyWifi.value = value
         }
     }
 

@@ -12,6 +12,9 @@ PlainBleBuffer plain_ble_call(int32_t action, uint64_t handle, uint32_t id, uint
 void plain_ble_buffer_free(PlainBleBuffer buffer);
 
 char *plain_prefs_open(const char *system_path, const char *user_path);
+char *plain_prefs_user_snapshot(void);
+char *plain_prefs_update_user(const char *patch_json);
+char *plain_prefs_user_action(const char *action_json);
 void plain_prefs_string_free(char *pointer);
 
 char *plain_core_start(const char *database_path, const char *token, const char *config_json);

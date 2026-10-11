@@ -37,14 +37,14 @@ internal fun SettingsCardItems(navController: NavHostController) {
             },
             icon = UiRes.drawable.ui_drawable_sun_moon,
             title = stringResource(Res.string.dark_theme),
-            subtitle = DarkTheme.entries.find { it.value == darkTheme }?.getText() ?: "",
+            subtitle = DarkTheme.entries.find { it == darkTheme }?.getText() ?: "",
             separatedActions = true,
         ) {
             Switch(
                 checked = DarkTheme.isDarkTheme(darkTheme),
                 onCheckedChange = {
                     scope.launch {
-                        UserPrefs.setDarkThemeValue(if (it) DarkTheme.ON.value else DarkTheme.OFF.value)
+                        UserPrefs.darkTheme.value = if (it) DarkTheme.ON else DarkTheme.OFF
                     }
                 },
             )

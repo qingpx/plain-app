@@ -85,14 +85,14 @@ fun QuickNoteCard(
             .collectLatest { t ->
                 QuickNoteDraftCache.text = t
                 delay(300)
-                UserPrefs.quickNoteDraft.set(t)
+                UserPrefs.quickNoteDraft.value = t
             }
     }
     DisposableEffect(Unit) {
         onDispose {
             val t = text
             QuickNoteDraftCache.text = t
-            coIO { UserPrefs.quickNoteDraft.set(t) }
+            coIO { UserPrefs.quickNoteDraft.value = t }
         }
     }
 

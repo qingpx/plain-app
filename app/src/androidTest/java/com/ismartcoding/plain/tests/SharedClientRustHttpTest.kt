@@ -39,10 +39,10 @@ class SharedClientRustHttpTest {
         var shareId: String? = null
         val messageId = "$marker-message"
         try {
-            UserPrefs.service.set(true)
+            UserPrefs.service.value = true
             stopHttpEngineAsync()
-            UserPrefs.httpPort.set(0)
-            UserPrefs.httpsPort.set(0)
+            UserPrefs.httpPort.value = 0
+            UserPrefs.httpsPort.value = 0
             startHttpEngineAsync()
             assertTrue(com.ismartcoding.plain.platform.checkHttpServerAsync())
             val share = ShareManager.createShare(marker, listOf(folder.absolutePath), true, null)
@@ -156,9 +156,9 @@ class SharedClientRustHttpTest {
             stopHttpEngineAsync()
             RustChatStore.delete(messageId)
             shareId?.let { ShareManager.deleteShare(it) }
-            UserPrefs.httpPort.set(http)
-            UserPrefs.httpsPort.set(https)
-            UserPrefs.service.set(service)
+            UserPrefs.httpPort.value = http
+            UserPrefs.httpsPort.value = https
+            UserPrefs.service.value = service
             folder.deleteRecursively()
         }
     }

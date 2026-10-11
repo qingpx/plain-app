@@ -135,7 +135,7 @@ fun ImagesPage(
     val reloadAfterGrant: () -> Unit = {
         scope.launch {
             cellsPerRow.value = UserPrefs.imageGridCellsPerRow.value
-            imagesVM.sortBy.value = UserPrefs.imageSortByValue()
+            imagesVM.sortBy.value = UserPrefs.imageSortBy.value
             imagesVM.loadAsync(tagsVM)
             mediaFoldersVM.loadAsync()
         }
@@ -199,7 +199,7 @@ fun ImagesPage(
                 },
                 onSortSelected = { sortBy ->
                     scope.launch {
-                        UserPrefs.setImageSortBy(sortBy)
+                        UserPrefs.imageSortBy.value = sortBy
                         imagesVM.sortBy.value = sortBy
                         imagesVM.loadAsync(tagsVM)
                     }
@@ -244,7 +244,7 @@ fun ImagesPage(
                                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                                     .gridDragSelect(items = itemsState, state = dragSelectState)
                                     .pinchZoomGrid(cellsPerRow = cellsPerRow, hapticFeedback = hapticFeedback, scope = scope) {
-                                        UserPrefs.imageGridCellsPerRow.set(it)
+                                        UserPrefs.imageGridCellsPerRow.value = it
                                     },
                                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                                 verticalArrangement = Arrangement.spacedBy(2.dp)

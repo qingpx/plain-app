@@ -15,7 +15,7 @@ class ScanHistoryViewModel : ViewModel() {
     fun fetch() {
         viewModelScope.launchSafe {
             _itemsFlow.update {
-                UserPrefs.scanHistoryValue()
+                UserPrefs.scanHistory.value
             }
         }
     }
@@ -25,7 +25,7 @@ class ScanHistoryViewModel : ViewModel() {
             _itemsFlow.update {
                 val mutableList = it.toMutableList()
                 mutableList.remove(value)
-                UserPrefs.setScanHistory(mutableList)
+                UserPrefs.scanHistory.value = mutableList
                 mutableList
             }
         }

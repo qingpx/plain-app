@@ -34,7 +34,7 @@ import kotlin.math.sin
 @SuppressLint("MissingPermission")
 actual suspend fun showPomodoroNotification(state: PomodoroState, nextState: PomodoroState) {
     val context = appContext
-    val settings = UserPrefs.pomodoroSettingsValue()
+    val settings = UserPrefs.pomodoroSettings.value
     if (!settings.showNotification) {
         return
     }

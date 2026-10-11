@@ -136,7 +136,7 @@ fun VideosPage(
     val reloadAfterGrant: () -> Unit = {
         scope.launch(Dispatchers.Default) {
             cellsPerRow.value = UserPrefs.videoGridCellsPerRow.value
-            videosVM.sortBy.value = UserPrefs.videoSortByValue()
+            videosVM.sortBy.value = UserPrefs.videoSortBy.value
             videosVM.loadAsync(tagsVM)
             mediaFoldersVM.loadAsync()
         }
@@ -189,7 +189,7 @@ fun VideosPage(
                 scrollToTop = { scope.launch { scrollState.scrollToItem(0) } },
                 onSortSelected = { sortBy ->
                     scope.launch(Dispatchers.Default) {
-                        UserPrefs.setVideoSortBy(sortBy)
+                        UserPrefs.videoSortBy.value = sortBy
                         videosVM.sortBy.value = sortBy
                         videosVM.loadAsync(tagsVM)
                     }
@@ -232,7 +232,7 @@ fun VideosPage(
                                     .nestedScroll(scrollBehavior.nestedScrollConnection)
                                     .gridDragSelect(items = itemsState, state = dragSelectState)
                                     .pinchZoomGrid(cellsPerRow = cellsPerRow, hapticFeedback = hapticFeedback, scope = scope) {
-                                        UserPrefs.videoGridCellsPerRow.set(it)
+                                        UserPrefs.videoGridCellsPerRow.value = it
                                     },
                                 horizontalArrangement = Arrangement.spacedBy(2.dp),
                                 verticalArrangement = Arrangement.spacedBy(2.dp),

@@ -1,111 +1,129 @@
 package com.ismartcoding.plain.preferences
 
-import com.ismartcoding.plain.data.*
+import com.ismartcoding.plain.audio.DPlaylistAudio
+import com.ismartcoding.plain.data.DPomodoroSettings
+import com.ismartcoding.plain.data.DScreenMirrorQuality
+import com.ismartcoding.plain.data.DVideo
+import com.ismartcoding.plain.data.FilePathData
+import com.ismartcoding.plain.data.NotificationFilterData
 import com.ismartcoding.plain.enums.AppFeatureType
+import com.ismartcoding.plain.enums.DarkTheme
 import com.ismartcoding.plain.enums.MediaPlayMode
+import com.ismartcoding.plain.enums.ScreenMirrorMode
 import com.ismartcoding.plain.features.file.FileSortBy
 import com.ismartcoding.plain.platform.Locale
-import com.ismartcoding.plain.platform.setSystemLocale
 
+/**
+ * Every user preference, one declaration per field.
+ *
+ * Each field is a [Pref] — a `MutableStateFlow` that persists on assignment —
+ * so a setting is read with `.value`, subscribed with `collect`, and changed by
+ * assigning `.value`. The key and codec stay inside the declaration; no caller
+ * builds a patch or names a storage key.
+ *
+ * Keys are the Rust serde names. Rust owns the defaults and the validation;
+ * the argument here is only what the flow shows before the first load, and
+ * [Prefs.load] replaces every value with the authoritative snapshot.
+ */
 object UserPrefs {
-    private val client get() = PreferencesClient.local
-    val httpPort = RemoteSetting<Int>(PreferencesClient.local, { it.httpPort }, { UserSettingsPatch(httpPort = it) })
-    val httpsPort = RemoteSetting<Int>(PreferencesClient.local, { it.httpsPort }, { UserSettingsPatch(httpsPort = it) })
-    val darkTheme = RemoteSetting<Int>(PreferencesClient.local, { it.darkTheme }, { UserSettingsPatch(darkTheme = it) })
-    val amoledDarkTheme = RemoteSetting<Boolean>(PreferencesClient.local, { it.amoledDarkTheme }, { UserSettingsPatch(amoledDarkTheme = it) })
-    val pdfFollowDarkTheme = RemoteSetting<Boolean>(PreferencesClient.local, { it.pdfFollowDarkTheme }, { UserSettingsPatch(pdfFollowDarkTheme = it) })
-    val keepAwake = RemoteSetting<Boolean>(PreferencesClient.local, { it.keepAwake }, { UserSettingsPatch(keepAwake = it) })
-    val locale = RemoteSetting<String>(PreferencesClient.local, { it.locale }, { UserSettingsPatch(locale = it) })
-    val service = RemoteSetting<Boolean>(PreferencesClient.local, { it.service }, { UserSettingsPatch(service = it) })
-    val desktopAccess = RemoteSetting<Boolean>(PreferencesClient.local, { it.desktopAccess }, { UserSettingsPatch(desktopAccess = it) })
-    val dlna = RemoteSetting<Boolean>(PreferencesClient.local, { it.dlna }, { UserSettingsPatch(dlna = it) })
-    val developerMode = RemoteSetting<Boolean>(PreferencesClient.local, { it.developerMode }, { UserSettingsPatch(developerMode = it) })
-    val allowAnyHost = RemoteSetting<Boolean>(PreferencesClient.local, { it.allowAnyHost }, { UserSettingsPatch(allowAnyHost = it) })
-    val deviceName = RemoteSetting<String>(PreferencesClient.local, { it.deviceName }, { UserSettingsPatch(deviceName = it) })
-    val https = RemoteSetting<Boolean>(PreferencesClient.local, { it.https }, { UserSettingsPatch(https = it) })
-    val webAddressBarExpanded = RemoteSetting<Boolean>(PreferencesClient.local, { it.webAddressBarExpanded }, { UserSettingsPatch(webAddressBarExpanded = it) })
-    val screenMirrorQuality = RemoteSetting<DScreenMirrorQuality>(PreferencesClient.local, { it.screenMirrorQuality }, { UserSettingsPatch(screenMirrorQuality = it) })
-    val audioPlayMode = RemoteSetting<MediaPlayMode>(PreferencesClient.local, { MediaPlayMode.entries[it.audioPlayMode] }, { UserSettingsPatch(audioPlayMode = it.ordinal) })
-    val audioPlaybackSpeed = RemoteSetting<Float>(PreferencesClient.local, { it.audioPlaybackSpeed }, { UserSettingsPatch(audioPlaybackSpeed = it) })
-    val imageGridCellsPerRow = RemoteSetting<Int>(PreferencesClient.local, { it.imageGridCellsPerRow }, { UserSettingsPatch(imageGridCellsPerRow = it) })
-    val videoGridCellsPerRow = RemoteSetting<Int>(PreferencesClient.local, { it.videoGridCellsPerRow }, { UserSettingsPatch(videoGridCellsPerRow = it) })
-    val showHiddenFiles = RemoteSetting<Boolean>(PreferencesClient.local, { it.showHiddenFiles }, { UserSettingsPatch(showHiddenFiles = it) })
-    val feedAutoRefresh = RemoteSetting<Boolean>(PreferencesClient.local, { it.feedAutoRefresh }, { UserSettingsPatch(feedAutoRefresh = it) })
-    val feedAutoRefreshInterval = RemoteSetting<Int>(PreferencesClient.local, { it.feedAutoRefreshIntervalSec }, { UserSettingsPatch(feedAutoRefreshIntervalSec = it) })
-    val feedAutoRefreshOnlyWifi = RemoteSetting<Boolean>(PreferencesClient.local, { it.feedAutoRefreshOnlyWifi }, { UserSettingsPatch(feedAutoRefreshOnlyWifi = it) })
-    val feedFontScale = RemoteSetting<Int>(PreferencesClient.local, { it.feedFontScale }, { UserSettingsPatch(feedFontScale = it) })
-    val editorWrapContent = RemoteSetting<Boolean>(PreferencesClient.local, { it.editorWrapContent }, { UserSettingsPatch(editorWrapContent = it) })
-    val editorFontSize = RemoteSetting<Int>(PreferencesClient.local, { it.editorFontSize }, { UserSettingsPatch(editorFontSize = it) })
-    val editorStatusBar = RemoteSetting<Boolean>(PreferencesClient.local, { it.editorStatusBar }, { UserSettingsPatch(editorStatusBar = it) })
-    val lastFilePath = RemoteSetting<FilePathData>(PreferencesClient.local, { it.lastFilePath }, { UserSettingsPatch(lastFilePath = it) })
-    val scanHistory = RemoteSetting<List<String>>(PreferencesClient.local, { it.scanHistory }, { UserSettingsPatch(scanHistory = it) })
-    val audioPlaylist = RemoteSetting<List<com.ismartcoding.plain.audio.DPlaylistAudio>>(PreferencesClient.local, { it.audioPlaylist }, { UserSettingsPatch(audioPlaylist = it) })
-    val chatInputText = RemoteSetting<String>(PreferencesClient.local, { it.chatInputText }, { UserSettingsPatch(chatInputText = it) })
-    val nearbyDiscoverable = RemoteSetting<Boolean>(PreferencesClient.local, { it.nearbyDiscoverable }, { UserSettingsPatch(nearbyDiscoverable = it) })
-    val aiImageSearchEnabled = RemoteSetting<Boolean>(PreferencesClient.local, { it.aiImageSearchEnabled }, { UserSettingsPatch(aiImageSearchEnabled = it) })
-    val notificationFilter = RemoteSetting<NotificationFilterData>(PreferencesClient.local, { it.notificationFilter }, { UserSettingsPatch(notificationFilter = it) })
-    val pomodoroSettings = RemoteSetting<DPomodoroSettings>(PreferencesClient.local, { it.pomodoroSettings }, { UserSettingsPatch(pomodoroSettings = it) })
-    val videoPlaylist = RemoteSetting<List<DVideo>>(PreferencesClient.local, { it.videoPlaylist }, { UserSettingsPatch(videoPlaylist = it) })
-    val homeFeatures = RemoteSetting<String>(PreferencesClient.local, { it.homeFeatures }, { UserSettingsPatch(homeFeatures = it) })
-    val quickNoteDraft = RemoteSetting<String>(PreferencesClient.local, { it.quickNoteDraft }, { UserSettingsPatch(quickNoteDraft = it) })
-    val launcherShortcuts = RemoteSetting<String>(PreferencesClient.local, { it.launcherShortcuts }, { UserSettingsPatch(launcherShortcuts = it) })
-    val recentSearches = RemoteSetting<List<String>>(PreferencesClient.local, { it.recentSearches }, { UserSettingsPatch(recentSearches = it) })
-    val recentSaveDirs = RemoteSetting<List<String>>(PreferencesClient.local, { it.recentSaveDirs }, { UserSettingsPatch(recentSaveDirs = it) })
-    val audioSortBy = RemoteSetting<Int>(PreferencesClient.local, { it.audioSortBy }, { UserSettingsPatch(audioSortBy = it) })
-    val videoSortBy = RemoteSetting<Int>(PreferencesClient.local, { it.videoSortBy }, { UserSettingsPatch(videoSortBy = it) })
-    val imageSortBy = RemoteSetting<Int>(PreferencesClient.local, { it.imageSortBy }, { UserSettingsPatch(imageSortBy = it) })
-    val docSortBy = RemoteSetting<Int>(PreferencesClient.local, { it.docSortBy }, { UserSettingsPatch(docSortBy = it) })
-    val fileSortBy = RemoteSetting<Int>(PreferencesClient.local, { it.fileSortBy }, { UserSettingsPatch(fileSortBy = it) })
-    val packageSortBy = RemoteSetting<Int>(PreferencesClient.local, { it.packageSortBy }, { UserSettingsPatch(packageSortBy = it) })
+    val httpPort = userPref("httpPort", 8080)
+    val httpsPort = userPref("httpsPort", 8443)
+    val darkTheme = userEnumPref("darkTheme", DarkTheme.UseDeviceTheme) { it.value }
+    val amoledDarkTheme = userPref("amoledDarkTheme", false)
+    val pdfFollowDarkTheme = userPref("pdfFollowDarkTheme", false)
+    val keepAwake = userPref("keepAwake", true)
+    val locale = userPref("locale", "")
+    val service = userPref("service", false)
+    val desktopAccess = userPref("desktopAccess", true)
+    val dlna = userPref("dlna", false)
+    val developerMode = userPref("developerMode", false)
+    val allowAnyHost = userPref("allowAnyHost", false)
+    val deviceName = userPref("deviceName", "")
+    val https = userPref("https", false)
+    val webAddressBarExpanded = userPref("webAddressBarExpanded", false)
+    val screenMirrorQuality = userPref("screenMirrorQuality", DScreenMirrorQuality(ScreenMirrorMode.HD, 1080))
+    val audioPlayMode = userEnumPref("audioPlayMode", MediaPlayMode.REPEAT)
+    val audioPlaybackSpeed = userPref("audioPlaybackSpeed", 1.0f)
+    val imageGridCellsPerRow = userPref("imageGridCellsPerRow", 3)
+    val videoGridCellsPerRow = userPref("videoGridCellsPerRow", 3)
+    val showHiddenFiles = userPref("showHiddenFiles", false)
+    val feedAutoRefresh = userPref("feedAutoRefresh", true)
+    val feedAutoRefreshInterval = userPref("feedAutoRefreshIntervalSec", 7200)
+    val feedAutoRefreshOnlyWifi = userPref("feedAutoRefreshOnlyWifi", false)
+    val feedFontScale = userPref("feedFontScale", 1)
+    val editorWrapContent = userPref("editorWrapContent", true)
+    val editorFontSize = userPref("editorFontSize", 14)
+    val editorStatusBar = userPref("editorStatusBar", true)
+    val lastFilePath = userPref("lastFilePath", FilePathData("", "", ""))
+    val scanHistory = userPref("scanHistory", emptyList<String>())
+    val audioPlaylist = userPref("audioPlaylist", emptyList<DPlaylistAudio>())
+    val chatInputText = userPref("chatInputText", "")
+    val nearbyDiscoverable = userPref("nearbyDiscoverable", true)
+    val aiImageSearchEnabled = userPref("aiImageSearchEnabled", false)
+    val notificationFilter = userPref("notificationFilter", NotificationFilterData("blacklist", emptySet()))
+    val pomodoroSettings = userPref("pomodoroSettings", DPomodoroSettings(25, 5, 15, 4, true, true, "", ""))
+    val videoPlaylist = userPref("videoPlaylist", emptyList<DVideo>())
+    val homeFeatures = userPref("homeFeatures", "IMAGES|VIDEOS|AUDIO|DOCS|FILES|NOTES|FEEDS")
+    val quickNoteDraft = userPref("quickNoteDraft", "")
+    val launcherShortcuts = userPref("launcherShortcuts", "NOTES|DOCS|FEEDS|POMODORO_TIMER")
+    val recentSearches = userPref("recentSearches", emptyList<String>())
+    val recentSaveDirs = userPref("recentSaveDirs", emptyList<String>())
+    val audioSortBy = userEnumPref("audioSortBy", FileSortBy.DATE_DESC)
+    val videoSortBy = userEnumPref("videoSortBy", FileSortBy.TAKEN_AT_DESC)
+    val imageSortBy = userEnumPref("imageSortBy", FileSortBy.TAKEN_AT_DESC)
+    val docSortBy = userEnumPref("docSortBy", FileSortBy.DATE_DESC)
+    val fileSortBy = userEnumPref("fileSortBy", FileSortBy.NAME_ASC)
+    val packageSortBy = userEnumPref("packageSortBy", FileSortBy.NAME_ASC)
 
-    suspend fun setDarkThemeValue(value: Int) { darkTheme.set(value) }
     fun localeValue(): Locale? = parseLocale(locale.value)
-    fun parseLocale(value: String): Locale? = value.takeIf { it.isNotEmpty() }?.split('-')?.let { Locale(it[0], it.getOrElse(1) { "" }) }
-    suspend fun setLocale(locale: Locale?) {
-        this.locale.set(locale?.let { it.language + if (it.country.isEmpty()) "" else "-${it.country}" }.orEmpty())
+
+    fun parseLocale(value: String): Locale? =
+        value.takeIf { it.isNotEmpty() }?.split('-')?.let { Locale(it[0], it.getOrElse(1) { "" }) }
+
+    /** The stored form of a locale: `language` or `language-country`, empty for system. */
+    fun formatLocale(value: Locale?): String =
+        value?.let { it.language + if (it.country.isEmpty()) "" else "-${it.country}" }.orEmpty()
+
+    // --- Commands ---
+    //
+    // These stay named because they are Rust-side rules, not field writes:
+    // de-duplicating a search, trimming a list to its limit, or rewriting a
+    // playlist entry. Each returns after re-reading, so the caller gets the
+    // committed list rather than a guess.
+
+    suspend fun recordRecentSearch(term: String): List<String> {
+        PrefStore.runAction(UserAction.RecordSearch(term))
+        return recentSearches.value
     }
-    fun screenMirrorQualityValue() = screenMirrorQuality.value
-    suspend fun setScreenMirrorQuality(value: DScreenMirrorQuality) { screenMirrorQuality.set(value) }
-    fun lastFilePathValue() = lastFilePath.value
-    suspend fun setLastFilePath(value: FilePathData) { lastFilePath.set(value) }
-    fun scanHistoryValue() = scanHistory.value
-    suspend fun setScanHistory(value: List<String>) { scanHistory.set(value) }
-    fun audioPlaylistValue() = audioPlaylist.value
-    suspend fun setAudioPlaylist(value: List<com.ismartcoding.plain.audio.DPlaylistAudio>) { audioPlaylist.set(value) }
-    fun notificationFilterValue() = notificationFilter.value
-    suspend fun setNotificationFilter(value: NotificationFilterData) { notificationFilter.set(value) }
-    suspend fun toggleNotificationApp(packageName: String) = client.toggleNotificationApp(packageName)
-    suspend fun clearNotificationApps() = client.clearNotificationFilterApps()
-    suspend fun setNotificationMode(mode: String) = client.setNotificationFilterMode(mode)
-    fun pomodoroSettingsValue() = pomodoroSettings.value
-    suspend fun setPomodoroSettings(value: DPomodoroSettings) { pomodoroSettings.set(value) }
-    fun videoPlaylistValue() = videoPlaylist.value
-    suspend fun setVideoPlaylist(value: List<DVideo>) { videoPlaylist.set(value) }
-    suspend fun deleteVideos(paths: Set<String>) = run {
-        client.deletePlaylistVideos(paths)
+
+    suspend fun removeRecentSearch(term: String): List<String> {
+        PrefStore.runAction(UserAction.RemoveSearch(term))
+        return recentSearches.value
     }
+
+    suspend fun clearRecentSearches() = PrefStore.runAction(UserAction.ClearSearches)
+
+    suspend fun recordRecentSaveDir(directory: String): List<String> {
+        PrefStore.runAction(UserAction.RecordSaveDirectory(directory))
+        return recentSaveDirs.value
+    }
+
+    suspend fun toggleNotificationApp(packageName: String) =
+        PrefStore.runAction(UserAction.ToggleNotificationApp(packageName))
+
+    suspend fun setNotificationMode(mode: String) = PrefStore.runAction(UserAction.SetNotificationMode(mode))
+
+    suspend fun clearNotificationApps() = PrefStore.runAction(UserAction.ClearNotificationApps)
+
+    suspend fun deleteVideos(paths: Set<String>) = PrefStore.runAction(UserAction.DeleteVideos(paths.toList()))
+
     fun parseFeatures(value: String): List<String> = value.split('|').filter { it.isNotBlank() }
+
     fun formatFeatures(value: List<String>): String = value.joinToString("|")
-    suspend fun setHomeFeatures(value: String) { homeFeatures.set(value) }
-    fun selectedLauncherShortcuts(value: String): List<AppFeatureType> = parseFeatures(value).mapNotNull { name -> AppFeatureType.entries.find { it.name == name } }
-    fun formatLauncherShortcuts(value: List<AppFeatureType>): String = value.joinToString("|") { it.name }
-    suspend fun setLauncherShortcuts(value: String) { launcherShortcuts.set(value) }
-    fun recentSearchesValue() = recentSearches.value
-    suspend fun recordRecentSearch(term: String): List<String> { client.recordRecentSearch(term); return recentSearches.value }
-    suspend fun removeRecentSearch(term: String): List<String> { client.removeRecentSearch(term); return recentSearches.value }
-    suspend fun clearRecentSearches() = client.clearRecentSearches()
-    fun recentSaveDirsValue() = recentSaveDirs.value
-    suspend fun recordRecentSaveDir(dir: String): List<String> { client.recordRecentSaveDirectory(dir); return recentSaveDirs.value }
-    fun audioSortByValue() = FileSortBy.entries[audioSortBy.value]
-    suspend fun setAudioSortBy(value: FileSortBy) { audioSortBy.set(value.ordinal) }
-    fun videoSortByValue() = FileSortBy.entries[videoSortBy.value]
-    suspend fun setVideoSortBy(value: FileSortBy) { videoSortBy.set(value.ordinal) }
-    fun imageSortByValue() = FileSortBy.entries[imageSortBy.value]
-    suspend fun setImageSortBy(value: FileSortBy) { imageSortBy.set(value.ordinal) }
-    fun docSortByValue() = FileSortBy.entries[docSortBy.value]
-    suspend fun setDocSortBy(value: FileSortBy) { docSortBy.set(value.ordinal) }
-    fun fileSortByValue() = FileSortBy.entries[fileSortBy.value]
-    suspend fun setFileSortBy(value: FileSortBy) { fileSortBy.set(value.ordinal) }
-    fun packageSortByValue() = FileSortBy.entries[packageSortBy.value]
-    suspend fun setPackageSortBy(value: FileSortBy) { packageSortBy.set(value.ordinal) }
+
+    fun selectedLauncherShortcuts(value: String): List<AppFeatureType> =
+        parseFeatures(value).mapNotNull { name -> AppFeatureType.entries.find { it.name == name } }
+
+    fun formatLauncherShortcuts(value: List<AppFeatureType>): String =
+        value.joinToString("|") { it.name }
 }

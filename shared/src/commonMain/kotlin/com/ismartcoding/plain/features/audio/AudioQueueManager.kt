@@ -24,7 +24,7 @@ object AudioQueueManager {
         selected("audioHostSetPlaylistSource(id: ${gql(playlistId)}, startPath: ${startPath?.let(::gql) ?: "null"})", "audioHostSetPlaylistSource")
 
     suspend fun setLibrarySource(startPath: String?, shuffle: Boolean): DPlaylistAudio? =
-        selected("audioHostSetLibrarySource(startPath: ${startPath?.let(::gql) ?: "null"}, shuffle: $shuffle, sortBy: ${gql(UserPrefs.audioSortByValue().name)})", "audioHostSetLibrarySource")
+        selected("audioHostSetLibrarySource(startPath: ${startPath?.let(::gql) ?: "null"}, shuffle: $shuffle, sortBy: ${gql(UserPrefs.audioSortBy.value.name)})", "audioHostSetLibrarySource")
 
     suspend fun clearQueue() { RustContentApi.mutate("audioHostClear") }
 

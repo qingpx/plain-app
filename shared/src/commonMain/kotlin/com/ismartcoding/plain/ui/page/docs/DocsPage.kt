@@ -96,7 +96,7 @@ fun DocsPage(
                 scrollToTop = { scope.launch { scrollState.scrollToItem(0) } },
                 onSortSelected = { sortBy ->
                     scope.launch(Dispatchers.Default) {
-                        UserPrefs.setDocSortBy(sortBy)
+                        UserPrefs.docSortBy.value = sortBy
                         docsVM.sortBy.value = sortBy
                         docsVM.loadAsync(tagsVM)
                     }

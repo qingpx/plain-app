@@ -30,10 +30,10 @@ class PeerLanRustHttpTest {
         val http = UserPrefs.httpPort.value
         val https = UserPrefs.httpsPort.value
         try {
-            UserPrefs.service.set(true)
+            UserPrefs.service.value = true
             stopHttpEngineAsync()
-            UserPrefs.httpPort.set(0)
-            UserPrefs.httpsPort.set(0)
+            UserPrefs.httpPort.value = 0
+            UserPrefs.httpsPort.value = 0
             startHttpEngineAsync()
             assertTrue(com.ismartcoding.plain.platform.checkHttpServerAsync())
             val incoming = DPeer(id = actor, name = "synthetic actor", key = Base64.encode(key), publicKey = publicKey, status = PeerStatus.PAIRED)
@@ -52,9 +52,9 @@ class PeerLanRustHttpTest {
             stopHttpEngineAsync()
             RustPeerStore.delete(id)
             if (originalActor == null) RustPeerStore.delete(actor) else RustPeerStore.update(originalActor)
-            UserPrefs.httpPort.set(http)
-            UserPrefs.httpsPort.set(https)
-            UserPrefs.service.set(service)
+            UserPrefs.httpPort.value = http
+            UserPrefs.httpsPort.value = https
+            UserPrefs.service.value = service
             PeerCacher.load()
         }
     }

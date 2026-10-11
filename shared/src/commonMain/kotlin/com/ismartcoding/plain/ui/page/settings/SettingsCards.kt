@@ -57,7 +57,7 @@ internal fun DeveloperSettingsCard(
         PListItem(title = stringResource(Res.string.developer_mode)) {
             Switch(checked = developerMode, onCheckedChange = {
                 scope.launch(Dispatchers.Default) {
-                    UserPrefs.developerMode.set(it)
+                    UserPrefs.developerMode.value = it
                 }
             })
         }
@@ -97,7 +97,7 @@ internal fun DeveloperSettingsCard(
                 ) {
                     Switch(checked = allowAnyHost, onCheckedChange = {
                         scope.launch(Dispatchers.Default) {
-                            UserPrefs.allowAnyHost.set(it)
+                            UserPrefs.allowAnyHost.value = it
                             restartServer()
                         }
                     })
