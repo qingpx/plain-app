@@ -63,7 +63,8 @@ kotlin {
             outputs.file(rustTargetDir.map { it.file("$rustTarget/release/libplain_rust.a") })
             environment("CARGO_TARGET_DIR", rustTargetDir.get().asFile.absolutePath)
             environment("PLAIN_ONNX_RUNTIME_DIR", onnxRuntimeDir.get().asFile.absolutePath)
-            commandLine("cargo", "build", "--locked", "--manifest-path", rootProject.file("plain-rs/Cargo.toml"), "--release", "--target", rustTarget)
+            // iOS frameworks consume only the static archive.
+            commandLine("cargo", "rustc", "--locked", "--manifest-path", rootProject.file("plain-rs/Cargo.toml"), "--lib", "--crate-type", "staticlib", "--release", "--target", rustTarget)
         }
         iosTarget.compilations.getByName("main").cinterops.create("plainPrefs") {
             defFile(rootProject.file("shared/src/nativeInterop/cinterop/plainPrefs.def"))
