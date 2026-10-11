@@ -10,20 +10,13 @@ import kotlinx.serialization.Serializable
 
 internal object BleDataChannel {
     private val client by lazy { createPlainHttpClient(PlainHttpClientSpec.HttpHost) }
-    suspend fun outgoing(token: String, exchange: suspend (ByteArray) -> ByteArray) = withTimeout(120_000) {
-        val target = session()
-        client.webSocket("${target.baseUrl.replace("http://", "ws://")}/chat/ble-exchange/$token", target.headers()) { socket ->
-            val bytes = withTimeout(15_000) { checkNotNull(socket.incoming.receive().binary) { "Expected BLE request bytes" } }
-            val response = coroutineScope {
-                val operation = async { exchange(bytes) }
-                select<ByteArray> {
-                    operation.onAwait { it }
-                    socket.incoming.onReceiveCatching { error("BLE data channel closed or received an unexpected frame") }
-                }
-            }
-            socket.sendBinary(response)
-        }
-    }
+
+    /**
+     * Handles one *incoming* peer BLE request: Rust dispatches the assembled
+     * request over `/chat/ble-incoming` and returns the encoded response. The
+     * outgoing direction no longer round-trips through here — Rust asks the App
+     * for the whole exchange in a single host call (see `BleTransport`).
+     */
     suspend fun incoming(remoteHost: String, characteristicUuid: String, message: ByteArray): ByteArray = withTimeout(120_000) {
         val target = session()
         var response: ByteArray? = null
