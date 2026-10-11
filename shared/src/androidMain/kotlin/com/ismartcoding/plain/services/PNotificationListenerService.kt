@@ -25,7 +25,7 @@ import com.ismartcoding.plain.platform.isEnabledAsync
 import com.ismartcoding.plain.packageManager
 import com.ismartcoding.plain.features.notification.RustNotificationEvents
 import com.ismartcoding.plain.events.EventType
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.lib.receiveEventHandler
 import com.ismartcoding.plain.lib.sendEvent
 import kotlinx.coroutines.Job
@@ -127,7 +127,7 @@ class PNotificationListenerService : NotificationListenerService() {
         // the fresh snapshot so web clients drop their no-permission state.
         coIO {
             sendEvent(
-                WebSocketEvent(
+                HostEvent(
                     EventType.PERMISSIONS_UPDATED,
                     JsonHelper.jsonEncode(getGrantedWebPermissionsAsync()),
                 ),

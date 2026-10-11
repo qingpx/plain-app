@@ -1,0 +1,16 @@
+package com.ismartcoding.plain.rust
+
+import com.ismartcoding.plain.events.EventType
+import com.ismartcoding.plain.events.HostEventData
+import kotlinx.serialization.Serializable
+
+@Serializable
+internal data class HostEventCapabilities(
+    val textTypes: Set<String>,
+    val binaryTypes: Set<String>,
+) {
+    fun accepts(type: EventType, data: HostEventData): Boolean = type.name in when (data) {
+        is HostEventData.Text -> textTypes
+        is HostEventData.Binary -> binaryTypes
+    }
+}

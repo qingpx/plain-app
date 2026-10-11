@@ -8,8 +8,8 @@ import com.ismartcoding.plain.discover.RustPairingRuntime
 import com.ismartcoding.plain.enums.DeviceType
 import com.ismartcoding.plain.events.HPairingCanceledEvent
 import com.ismartcoding.plain.events.HPairingRequestReceivedEvent
-import com.ismartcoding.plain.events.WebSocketData
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEventData
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.lib.Channel
 import com.ismartcoding.plain.platform.generateECDHKeyPair
 import com.ismartcoding.plain.platform.generateEd25519KeyPair
@@ -39,7 +39,7 @@ class PairingEventLoopRustHttpTest {
                 when (event) {
                     is HPairingRequestReceivedEvent -> if (event.request.fromId == id) requests.incrementAndGet()
                     is HPairingCanceledEvent -> if (event.fromId == id) cancels.incrementAndGet()
-                    is WebSocketEvent -> if ((event.data as? WebSocketData.Text)?.value?.contains(id) == true) republished.incrementAndGet()
+                    is HostEvent -> if ((event.data as? HostEventData.Text)?.value?.contains(id) == true) republished.incrementAndGet()
                 }
             }
         }

@@ -26,8 +26,7 @@ import com.ismartcoding.plain.helpers.FilterField
 import com.ismartcoding.plain.helpers.QueryHelper
 import com.ismartcoding.plain.events.EventType
 import com.ismartcoding.plain.events.SmsSendResultData
-import com.ismartcoding.plain.events.WebSocketEvent
-import com.ismartcoding.plain.api.WebSocketHelper
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.lib.JsonHelper
 import kotlinx.serialization.json.*
 import com.ismartcoding.plain.lib.TimeHelper
@@ -173,7 +172,7 @@ object SmsHelper {
     }
 
     private suspend fun sendSmsResultEvent(result: SmsSendResultData) {
-        sendEvent(WebSocketEvent(EventType.SMS_SEND_RESULT, JsonHelper.jsonEncode(result)))
+        sendEvent(HostEvent(EventType.SMS_SEND_RESULT, JsonHelper.jsonEncode(result)))
     }
 
     private fun getProjection(): Array<String> {

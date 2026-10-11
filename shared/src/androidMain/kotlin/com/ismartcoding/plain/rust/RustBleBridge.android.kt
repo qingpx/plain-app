@@ -1,4 +1,4 @@
-package com.ismartcoding.plain.ble
+package com.ismartcoding.plain.rust
 
 internal actual object RustBleBridge {
     init { System.loadLibrary("plain_rust") }

@@ -1,4 +1,4 @@
-package com.ismartcoding.plain.ble
+package com.ismartcoding.plain.rust
 
 import com.ismartcoding.plain.rustprefs.*
 import kotlinx.cinterop.*

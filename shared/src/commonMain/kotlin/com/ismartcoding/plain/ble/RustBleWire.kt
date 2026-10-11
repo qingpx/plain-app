@@ -1,5 +1,7 @@
 package com.ismartcoding.plain.ble
 
+import com.ismartcoding.plain.rust.RustBleBridge
+
 object RustBleWire : BleWire {
     override fun nextRequestId(): Int {
         val handle = RustBleBridge.create()

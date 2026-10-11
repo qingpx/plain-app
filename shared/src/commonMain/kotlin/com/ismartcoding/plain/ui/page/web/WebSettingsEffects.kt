@@ -12,7 +12,7 @@ import com.ismartcoding.plain.events.IgnoreBatteryOptimizationResultEvent
 import com.ismartcoding.plain.events.ClipboardSyncChangedEvent
 import com.ismartcoding.plain.events.PermissionsResultEvent
 import com.ismartcoding.plain.events.RequestPermissionsEvent
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.events.WindowFocusChangedEvent
 import com.ismartcoding.plain.lib.JsonHelper.jsonEncode
 import com.ismartcoding.plain.platform.Permission
@@ -71,7 +71,7 @@ internal fun togglePermission(scope: CoroutineScope, m: PermissionItem, enable: 
         // The web `permissions` list is backed by this preference and toggling
         // a switch never produces a PermissionsResultEvent — push the fresh
         // snapshot so web clients refetch.
-        sendEvent(WebSocketEvent(EventType.PERMISSIONS_UPDATED, jsonEncode(getGrantedWebPermissionsAsync())))
+        sendEvent(HostEvent(EventType.PERMISSIONS_UPDATED, jsonEncode(getGrantedWebPermissionsAsync())))
         if (m.permission == Permission.NOTIFICATION_LISTENER) {
             val webEnabled = UserPrefs.desktopAccess.value
             toggleNotificationListener(enable && webEnabled)

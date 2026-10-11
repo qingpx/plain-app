@@ -35,7 +35,6 @@ import com.ismartcoding.plain.platform.setBluetoothCanContinue
 import com.ismartcoding.plain.platform.startHttpServerService
 import com.ismartcoding.plain.ui.models.FolderOption
 import com.ismartcoding.plain.features.session.AuthRequest
-import com.ismartcoding.plain.api.WebSocketHelper
 import com.ismartcoding.plain.platform.MediaDurationFixQueue
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -188,9 +187,9 @@ object AppEvents {
                         }
                     }
 
-                    is WebSocketEvent -> {
+                    is HostEvent -> {
                         coIO {
-                            WebSocketHelper.sendEventAsync(event)
+                            com.ismartcoding.plain.rust.PlainRust.publish(event)
                         }
                     }
 
@@ -203,7 +202,7 @@ object AppEvents {
                         // Push the new permission snapshot to web clients so they
                         // refetch the app query.
                         coIO {
-                            sendEvent(WebSocketEvent(EventType.PERMISSIONS_UPDATED, jsonEncode(getGrantedWebPermissionsAsync())))
+                            sendEvent(HostEvent(EventType.PERMISSIONS_UPDATED, jsonEncode(getGrantedWebPermissionsAsync())))
                         }
                     }
 

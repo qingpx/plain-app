@@ -12,7 +12,7 @@ import com.ismartcoding.plain.data.TagRelationStub
 import com.ismartcoding.plain.docs.DocMediaStoreHelper
 import com.ismartcoding.plain.enums.DataType
 import com.ismartcoding.plain.events.EventType
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.features.media.CallMediaStoreHelper
 import com.ismartcoding.plain.features.media.ContactMediaStoreHelper
 import com.ismartcoding.plain.features.media.ImageMediaStoreHelper
@@ -25,7 +25,6 @@ import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.lib.TimeHelper
 import com.ismartcoding.plain.lib.coIO
 import com.ismartcoding.plain.lib.sendEvent
-import com.ismartcoding.plain.api.WebSocketHelper
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay

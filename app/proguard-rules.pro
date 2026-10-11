@@ -89,7 +89,7 @@
 -keepclassmembers,allowoptimization enum com.ismartcoding.plain.enums.PhoneType { public static final com.ismartcoding.plain.enums.PhoneType *; }
 -keepclassmembers,allowoptimization enum com.ismartcoding.plain.enums.EmailType { public static final com.ismartcoding.plain.enums.EmailType *; }
 -keepclassmembers,allowoptimization enum com.ismartcoding.plain.enums.PostalType { public static final com.ismartcoding.plain.enums.PostalType *; }
--keepclassmembers,allowoptimization enum com.ismartcoding.plain.enums.EventType { public static final com.ismartcoding.plain.enums.EventType *; }
+-keepclassmembers,allowoptimization enum com.ismartcoding.plain.events.EventType { public static final com.ismartcoding.plain.events.EventType *; }
 -keepclassmembers,allowoptimization enum com.ismartcoding.plain.enums.WebsiteType { public static final com.ismartcoding.plain.enums.WebsiteType *; }
 -keepclassmembers,allowoptimization enum com.ismartcoding.plain.enums.ImProtocol { public static final com.ismartcoding.plain.enums.ImProtocol *; }
 -keepclassmembers,allowoptimization enum com.ismartcoding.plain.lib.dlna.DlnaMediaType { public static final com.ismartcoding.plain.lib.dlna.DlnaMediaType *; }
@@ -109,4 +109,8 @@
 -dontwarn okhttp3.internal.platform.**
 -dontwarn org.conscrypt.**
 -dontwarn org.openjsse.**
--keep class com.ismartcoding.plain.preferences.RustPrefsBridge { *; }
+-keep class com.ismartcoding.plain.rust.RustPrefsBridge { *; }
+
+-keep class com.ismartcoding.plain.rust.RustCoreBridge { *; }
+
+-keep class com.ismartcoding.plain.rust.RustBleBridge { *; }

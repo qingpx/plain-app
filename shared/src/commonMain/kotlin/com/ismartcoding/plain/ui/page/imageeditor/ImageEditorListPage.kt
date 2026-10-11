@@ -57,9 +57,8 @@ fun ImageEditorListPage(
 
     LaunchedEffect(vm) {
         launch { vm.loadAsync() }
-        com.ismartcoding.plain.lib.Channel.sharedFlow.collect { event ->
-            if (event is com.ismartcoding.plain.events.WebSocketEvent &&
-                event.type == com.ismartcoding.plain.events.EventType.CONTENT_CHANGED) vm.loadAsync()
+        com.ismartcoding.plain.rust.PlainRust.events.collect { event ->
+            if (event.type == com.ismartcoding.plain.events.EventType.CONTENT_CHANGED.name) vm.loadAsync()
         }
     }
 

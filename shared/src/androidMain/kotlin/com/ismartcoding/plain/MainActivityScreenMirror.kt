@@ -7,13 +7,13 @@ import android.net.Uri
 import android.provider.Settings
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.events.EventType
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.lib.sendEvent
 import com.ismartcoding.plain.platform.LocaleHelper
 import com.ismartcoding.plain.ui.helpers.DialogHelper
 
 internal fun MainActivity.sendScreenMirrorAudioStatus(granted: Boolean) {
-    sendEvent(WebSocketEvent(EventType.SCREEN_MIRROR_AUDIO_GRANTED, JsonHelper.jsonEncode(granted)))
+    sendEvent(HostEvent(EventType.SCREEN_MIRROR_AUDIO_GRANTED, JsonHelper.jsonEncode(granted)))
 }
 
 internal fun MainActivity.openAppDetailsSettingsForAudio() {

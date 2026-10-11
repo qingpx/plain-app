@@ -1,7 +1,7 @@
-package com.ismartcoding.plain.api
+package com.ismartcoding.plain.rust
 
 /**
- * Which platform host answers a method received on the Rust host socket.
+ * Which platform host answers a method received on the Rust host event stream.
  *
  * Kept separate from [RustHostApi] so the routing contract can be asserted on
  * the host JVM: a wrong prefix here makes one subsystem's method answer for

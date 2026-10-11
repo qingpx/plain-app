@@ -1,5 +1,6 @@
 package com.ismartcoding.plain.api
 
+import com.ismartcoding.plain.rust.*
 import com.ismartcoding.plain.lib.JsonHelper
 
 import com.ismartcoding.plain.events.*
@@ -19,13 +20,9 @@ class RustApiException(message: String, cause: Throwable? = null) : Exception(me
 
 object RustContentApi {
     private val lock = PlatformLock()
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val client by lazy { createPlainHttpClient(PlainHttpClientSpec.Local()) }
     private val transferClient by lazy { createPlainHttpClient(PlainHttpClientSpec.Local(15 * 60)) }
-    private val eventClient by lazy { createPeerStatusHttpClient() }
     private val statusLock = Mutex()
-    private val eventSendLock = Mutex()
-    private val eventSocket = MutableStateFlow<Pair<PlainWebSocketSession, HostEventCapabilities>?>(null)
     @Volatile private var localSession: ContentApiSession? = null
     private val syncStates = MutableStateFlow<Map<String, Pair<String, String>>>(emptyMap())
 
@@ -48,21 +45,21 @@ object RustContentApi {
         val config = RustHttpServerConfig(
             isDebugBuild(), getDeviceName(), RustWebAssets.ensure(),
         )
-        val ports = JsonHelper.jsonDecode<RustHttpServerResult>(RustCoreBridge.start(
+        val ports = JsonHelper.jsonDecode<RustHttpServerResult>(PlainRust.initialize(
             "$directory/plain-content.db", token, JsonHelper.jsonEncode(config)))
         check(ports.errorCode.isEmpty()) { ports.error }
         localSession = ContentApiSession("http://127.0.0.1:${ports.httpPort}", "local", token)
-        kotlinx.coroutines.runBlocking(com.ismartcoding.plain.platform.IODispatcher) { com.ismartcoding.plain.preferences.RustSystemState.refresh() }
-        httpGeneration = ports.generation
         if (!collectorsStarted) {
-            RustHostApi.start { checkNotNull(localSession) }
-            scope.launch { collectEvents() }
+            PlainRust.start { checkNotNull(localSession) }
             collectorsStarted = true
         }
+        kotlinx.coroutines.runBlocking(com.ismartcoding.plain.platform.IODispatcher) { com.ismartcoding.plain.preferences.RustSystemState.refresh() }
+        httpGeneration = ports.generation
+
     }
 
     internal fun stopHttp() = lock.withLock {
-        RustCoreBridge.stop()
+        PlainRust.stopHttp()
         httpGeneration = 0L
     }
 
@@ -77,17 +74,25 @@ object RustContentApi {
 
     suspend fun graphql(document: String, variables: Map<String, JsonElement> = emptyMap(), session: ContentApiSession? = null): JsonObject = execute(document, session, variables = variables)
 
-    private suspend fun execute(document: String, session: ContentApiSession?, longRunning: Boolean = false, variables: Map<String, JsonElement> = emptyMap()): JsonObject {
+    private suspend fun execute(document: String, session: ContentApiSession?, longRunning: Boolean = false, variables: Map<String, JsonElement> = emptyMap()): JsonObject =
+        decodeGraphqlResponse(PlainRust.request(RustCommand.Graphql(document, variables, session, longRunning, hostApi = true)).toString())
+
+    internal suspend fun executeTransport(document: String, session: ContentApiSession?, longRunning: Boolean = false, variables: Map<String, JsonElement> = emptyMap(), operationName: String? = null, hostApi: Boolean = false): JsonObject {
         val target = session ?: checkNotNull(localSession)
-        val body = JsonHelper.jsonEncode(ContentQueryRequest(document, variables))
+        val body = JsonHelper.jsonEncode(GraphqlRequest(document, variables, operationName))
+        if (session == null || session == localSession) return JsonHelper.jsonDecode(PlainRust.graphql(body, hostApi))
         val response = (if (longRunning) transferClient else client).postText("${target.baseUrl}/graphql", body, "application/json", target.headers())
         response.use {
             check(it.isOk()) { "Rust API returned HTTP ${it.status}" }
-            val result = JsonHelper.jsonDecode<JsonElement>(it.bodyAsText()).jsonObject
-            val errors = result["errors"] as? JsonArray
-            check(errors.isNullOrEmpty()) { errors?.joinToString { error -> error.jsonObject["message"]?.jsonPrimitive?.content ?: "Rust API error" } ?: "Rust API error" }
-            return result.getValue("data").jsonObject
+            return JsonHelper.jsonDecode(it.bodyAsText())
         }
+    }
+
+    private fun decodeGraphqlResponse(body: String): JsonObject {
+        val result = JsonHelper.jsonDecode<JsonObject>(body)
+        val errors = result["errors"] as? JsonArray
+        check(errors.isNullOrEmpty()) { errors?.joinToString { error -> error.jsonObject["message"]?.jsonPrimitive?.content ?: "Rust API error" } ?: "Rust API error" }
+        return result.getValue("data").jsonObject
     }
 
     /**
@@ -152,49 +157,5 @@ object RustContentApi {
         }
     }
 
-    suspend fun publish(event: WebSocketEvent): Int {
-        return eventSendLock.withLock {
-            val (socket, capabilities) = withTimeoutOrNull(5_000) { eventSocket.filterNotNull().first() } ?: return@withLock 0
-            require(capabilities.accepts(event.type, event.data)) { "${event.type} is not a host-produced event" }
-            try {
-                when (val data = event.data) {
-                    is WebSocketData.Text -> socket.sendText(JsonHelper.jsonEncode(HostEventPacket(event.type.name, data.value)))
-                    is WebSocketData.Binary -> {
-                        val name = event.type.name.encodeToByteArray()
-                        val bytes = ByteArray(name.size + 1 + data.value.size)
-                        name.copyInto(bytes)
-                        data.value.copyInto(bytes, name.size + 1)
-                        socket.sendBinary(bytes)
-                    }
-                }
-                com.ismartcoding.plain.features.session.onlineClientIds.value.size
-            } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { 0 }
-        }
-    }
-
-    private suspend fun collectEvents() {
-        var retryMs = 500L
-        while (currentCoroutineContext().isActive) {
-            try {
-                eventClient.webSocket(localSession!!.baseUrl.replace("http://", "ws://") + "/events", localSession!!.headers()) { socket ->
-                    retryMs = 500L
-                    val greeting = socket.incoming.receive().text ?: error("Missing event handshake")
-                    val initial = JsonHelper.jsonDecode<ContentEventPacket>(greeting)
-                    val capabilities = checkNotNull(initial.hostCapabilities) { "Missing host event capabilities" }
-                    eventSocket.value = socket to capabilities
-                    HttpEventProjection.reconcile()
-                    HttpEventProjection.apply(initial)
-                    for (frame in socket.incoming) {
-                        val text = frame.text ?: continue
-                        HttpEventProjection.apply(JsonHelper.jsonDecode<ContentEventPacket>(text))
-                    }
-                }
-            } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { }
-            finally { eventSocket.value = null; com.ismartcoding.plain.features.session.setOnlineClientIds(emptySet()) }
-            delay(retryMs)
-            retryMs = (retryMs * 2).coerceAtMost(5_000)
-        }
-    }
+    suspend fun publish(event: HostEvent): Int = PlainRust.publish(event)
 }

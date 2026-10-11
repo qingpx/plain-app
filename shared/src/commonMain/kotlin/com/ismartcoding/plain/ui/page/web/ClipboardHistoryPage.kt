@@ -21,8 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.ismartcoding.plain.events.EventType
-import com.ismartcoding.plain.events.WebSocketEvent
-import com.ismartcoding.plain.lib.Channel
 import com.ismartcoding.plain.i18n.*
 import com.ismartcoding.plain.platform.LocaleHelper
 import com.ismartcoding.plain.platform.setClipboardText
@@ -56,8 +54,8 @@ fun ClipboardHistoryPage(
 
     LaunchedEffect(vm) {
         launch { vm.loadAsync() }
-        Channel.sharedFlow.collect { event ->
-            if (event is WebSocketEvent && event.type == EventType.CONTENT_CHANGED) vm.loadAsync()
+        com.ismartcoding.plain.rust.PlainRust.events.collect { event ->
+            if (event.type == EventType.CONTENT_CHANGED.name) vm.loadAsync()
         }
     }
 

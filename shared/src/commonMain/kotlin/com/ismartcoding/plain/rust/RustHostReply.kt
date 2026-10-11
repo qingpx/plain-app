@@ -1,4 +1,4 @@
-package com.ismartcoding.plain.api
+package com.ismartcoding.plain.rust
 
 import kotlinx.serialization.EncodeDefault
 import kotlinx.serialization.Serializable

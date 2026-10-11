@@ -1,4 +1,4 @@
-package com.ismartcoding.plain.preferences
+package com.ismartcoding.plain.rust
 
 import com.ismartcoding.plain.rustprefs.plain_prefs_open
 import com.ismartcoding.plain.rustprefs.plain_prefs_string_free

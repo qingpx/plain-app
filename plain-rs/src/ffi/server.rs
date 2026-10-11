@@ -33,6 +33,7 @@ pub extern "C" fn plain_core_start(
 pub extern "C" fn plain_core_stop() {
     if let Ok(mut core) = CORE.lock() {
         if let Some(core) = core.take() {
+            crate::ffi::events::clear();
             core.runtime.block_on(core.server.shutdown());
         }
     }
@@ -64,7 +65,7 @@ mod android {
         sys::jstring,
     };
     #[unsafe(no_mangle)]
-    pub extern "system" fn Java_com_ismartcoding_plain_api_RustCoreBridge_startNative(
+    pub extern "system" fn Java_com_ismartcoding_plain_rust_RustCoreBridge_startNative(
         mut env: EnvUnowned<'_>,
         _: JObject<'_>,
         path: JString<'_>,
@@ -86,7 +87,7 @@ mod android {
         .into_raw()
     }
     #[unsafe(no_mangle)]
-    pub extern "system" fn Java_com_ismartcoding_plain_api_RustCoreBridge_stopNative(
+    pub extern "system" fn Java_com_ismartcoding_plain_rust_RustCoreBridge_stopNative(
         mut env: EnvUnowned<'_>,
         _: JObject<'_>,
     ) -> jstring {

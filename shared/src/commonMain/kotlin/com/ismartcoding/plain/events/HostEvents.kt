@@ -3,9 +3,9 @@ package com.ismartcoding.plain.events
 import com.ismartcoding.plain.lib.ChannelEvent
 import kotlinx.serialization.Serializable
 
-sealed class WebSocketData {
-    data class Text(val value: String) : WebSocketData()
-    data class Binary(val value: ByteArray) : WebSocketData() {
+sealed class HostEventData {
+    data class Text(val value: String) : HostEventData()
+    data class Binary(val value: ByteArray) : HostEventData() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other == null || this::class != other::class) return false
@@ -22,13 +22,13 @@ sealed class WebSocketData {
 }
 
 // Platform facts uploaded to Rust for delivery to public clients.
-class WebSocketEvent(
+class HostEvent(
     val type: EventType,
-    val data: WebSocketData,
+    val data: HostEventData,
 ) : ChannelEvent()
 {
-    constructor(type: EventType, data: String) : this(type, WebSocketData.Text(data))
-    constructor(type: EventType, data: ByteArray) : this(type, WebSocketData.Binary(data))
+    constructor(type: EventType, data: String) : this(type, HostEventData.Text(data))
+    constructor(type: EventType, data: ByteArray) : this(type, HostEventData.Binary(data))
 }
 
 enum class EventType {

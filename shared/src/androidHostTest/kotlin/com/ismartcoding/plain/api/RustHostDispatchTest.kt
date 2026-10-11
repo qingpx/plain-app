@@ -1,5 +1,7 @@
 package com.ismartcoding.plain.api
 
+import com.ismartcoding.plain.rust.*
+
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

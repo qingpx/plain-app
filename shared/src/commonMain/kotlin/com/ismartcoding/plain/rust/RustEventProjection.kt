@@ -1,14 +1,15 @@
-package com.ismartcoding.plain.api
+package com.ismartcoding.plain.rust
 
 import com.ismartcoding.plain.events.EventType
 import com.ismartcoding.plain.events.HWebRequestReceivedEvent
+import com.ismartcoding.plain.api.*
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.lib.sendEvent
 import com.ismartcoding.plain.ui.models.NotesViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.json.*
 
-internal object HttpEventProjection {
+internal object RustEventProjection {
     suspend fun reconcile() {
         com.ismartcoding.plain.preferences.PreferencesClient.local.refresh()
         com.ismartcoding.plain.features.session.refreshOnlineClientIds()
@@ -28,7 +29,7 @@ internal object HttpEventProjection {
         com.ismartcoding.plain.chat.ChatCacher.load()
     }
 
-    suspend fun apply(message: ContentEventPacket) {
+    suspend fun apply(message: RustEvent) {
         val type = message.type
         val payload = message.payload
         when (type) {

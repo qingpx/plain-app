@@ -9,7 +9,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 import com.ismartcoding.plain.data.DScreenMirrorQuality
 import com.ismartcoding.plain.enums.ScreenMirrorMode
 import com.ismartcoding.plain.events.EventType
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.lib.JsonHelper.jsonEncode
 import com.ismartcoding.plain.platform.isUPlus
 import com.ismartcoding.plain.lib.logcat.LogCat
@@ -174,7 +174,7 @@ class ScreenMirrorPipeline(
 
     private fun broadcastConfig() {
         sendEvent(
-            WebSocketEvent(
+            HostEvent(
                 EventType.SCREEN_MIRROR_VIDEO_CODEC,
                 jsonEncode(getScreenMirrorVideoCodec()),
             )
@@ -213,7 +213,7 @@ class ScreenMirrorPipeline(
                 it.onEncoded = { opus, pts ->
                     val packet = VideoPacket.encode(audioFrameId++, pts, VideoPacket.FLAG_AUDIO, opus)
                     sendEvent(
-                        WebSocketEvent(
+                        HostEvent(
                             EventType.SCREEN_MIRROR_AUDIO,
                             packet
                         )
@@ -252,7 +252,7 @@ class ScreenMirrorPipeline(
                 val flags: Byte = if (isKey) VideoPacket.FLAG_KEY_FRAME else 0
                 val packet = VideoPacket.encode(videoFrameId++, pts, flags, nalu)
                 sendEvent(
-                    WebSocketEvent(
+                    HostEvent(
                         EventType.SCREEN_MIRROR_VIDEO,
                         packet
                     )

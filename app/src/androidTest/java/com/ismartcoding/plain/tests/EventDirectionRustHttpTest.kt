@@ -3,7 +3,7 @@ package com.ismartcoding.plain.tests
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ismartcoding.plain.api.RustContentApi
 import com.ismartcoding.plain.events.EventType
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEvent
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -17,7 +17,7 @@ class EventDirectionRustHttpTest {
             EventType.NEARBY_DEVICE_FOUND, EventType.NEARBY_DISCOVERY_STARTED,
             EventType.MESSAGE_CREATED, EventType.DOWNLOAD_PROGRESS, EventType.CONTENT_CHANGED,
             EventType.DEVICE_NAME_UPDATED, EventType.POMODORO_SETTINGS_UPDATE, EventType.NOTIFICATION_REFRESHED)) {
-            val error = runCatching { RustContentApi.publish(WebSocketEvent(type, "{}")) }.exceptionOrNull()
+            val error = runCatching { RustContentApi.publish(HostEvent(type, "{}")) }.exceptionOrNull()
             assertTrue("$type must be rejected before sending", error is IllegalArgumentException)
         }
     }

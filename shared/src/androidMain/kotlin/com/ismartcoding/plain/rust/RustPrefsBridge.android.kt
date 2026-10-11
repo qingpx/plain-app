@@ -1,4 +1,4 @@
-package com.ismartcoding.plain.preferences
+package com.ismartcoding.plain.rust
 
 internal actual object RustPrefsBridge {
     init { System.loadLibrary("plain_rust") }

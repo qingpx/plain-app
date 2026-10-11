@@ -15,7 +15,7 @@ import com.ismartcoding.plain.lib.logcat.LogCat
 import com.ismartcoding.plain.AppIntents
 import com.ismartcoding.plain.data.DScreenMirrorQuality
 import com.ismartcoding.plain.events.EventType
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.helpers.NotificationHelper
 import com.ismartcoding.plain.lib.sendEvent
 import com.ismartcoding.plain.mediaProjectionManager
@@ -134,7 +134,7 @@ class ScreenMirrorService : LifecycleService() {
         }
         pipeline = p
         sendEvent(
-            WebSocketEvent(
+            HostEvent(
                 EventType.SCREEN_MIRRORING,
                 """{"running":true}""",
             ),
@@ -163,7 +163,7 @@ class ScreenMirrorService : LifecycleService() {
         if (!running) return
         running = false
         sendEvent(
-            WebSocketEvent(
+            HostEvent(
                 EventType.SCREEN_MIRRORING,
                 """{"running":false}""",
             ),

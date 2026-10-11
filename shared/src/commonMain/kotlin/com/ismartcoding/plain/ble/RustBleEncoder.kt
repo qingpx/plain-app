@@ -1,5 +1,7 @@
 package com.ismartcoding.plain.ble
 
+import com.ismartcoding.plain.rust.RustBleBridge
+
 import com.ismartcoding.plain.platform.PlatformLock
 
 internal class RustBleEncoder(message: ByteArray, requestId: Int, response: Boolean, limit: Int) : BleEncoder {

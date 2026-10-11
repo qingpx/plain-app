@@ -21,19 +21,36 @@ pub(crate) fn start(path: &str, token: &str, config: &str) -> Result<String, Str
                 .set_build_debug(config["debug"].as_bool().unwrap_or(false));
             core.server
                 .set_web_root(config["webRoot"].as_str().unwrap_or_default());
-            let (http, _) = core.runtime.block_on(core.server.start_public(
-                plain_rs::prefs::user::snapshot(&prefs).map_err(|e|e.to_string())?.http_port as u16,
-                plain_rs::prefs::user::snapshot(&prefs).map_err(|e|e.to_string())?.https_port as u16,
-                cert,
-                key,
-            ))?;
+            let (http, _) = core.runtime.block_on(
+                core.server.start_public(
+                    plain_rs::prefs::user::snapshot(&prefs)
+                        .map_err(|e| e.to_string())?
+                        .http_port as u16,
+                    plain_rs::prefs::user::snapshot(&prefs)
+                        .map_err(|e| e.to_string())?
+                        .https_port as u16,
+                    cert,
+                    key,
+                ),
+            )?;
             core.server.port = http;
         }
     } else {
         plain_rs::prefs::system::bootstrap(&prefs).map_err(|e| e.to_string())?;
-        if plain_rs::prefs::user::snapshot(&prefs).map_err(|e|e.to_string())?.device_name.is_empty() {
-            let name=config["deviceName"].as_str().ok_or("Missing device name")?;
-            plain_rs::prefs::user::patch(&prefs,plain_rs::prefs::user::UserSettingsPatch{device_name:Some(name.into()),..Default::default()}).map_err(|e|e.to_string())?;
+        if plain_rs::prefs::user::snapshot(&prefs)
+            .map_err(|e| e.to_string())?
+            .device_name
+            .is_empty()
+        {
+            let name = config["deviceName"].as_str().ok_or("Missing device name")?;
+            plain_rs::prefs::user::patch(
+                &prefs,
+                plain_rs::prefs::user::UserSettingsPatch {
+                    device_name: Some(name.into()),
+                    ..Default::default()
+                },
+            )
+            .map_err(|e| e.to_string())?;
         }
         let runtime = tokio::runtime::Builder::new_multi_thread()
             .worker_threads(2)
@@ -44,13 +61,18 @@ pub(crate) fn start(path: &str, token: &str, config: &str) -> Result<String, Str
             std::path::Path::new(path),
             token,
             prefs.clone(),
-            plain_rs::prefs::user::snapshot(&prefs).map_err(|e|e.to_string())?.http_port as u16,
-            plain_rs::prefs::user::snapshot(&prefs).map_err(|e|e.to_string())?.https_port as u16,
+            plain_rs::prefs::user::snapshot(&prefs)
+                .map_err(|e| e.to_string())?
+                .http_port as u16,
+            plain_rs::prefs::user::snapshot(&prefs)
+                .map_err(|e| e.to_string())?
+                .https_port as u16,
             cert,
             key,
             config["debug"].as_bool().unwrap_or(false),
             config["webRoot"].as_str().unwrap_or_default(),
         ))?;
+        crate::ffi::events::install(&runtime, &server);
         *guard = Some(crate::ffi::server::Core {
             path: PathBuf::from(path),
             token: token.into(),
@@ -63,7 +85,15 @@ pub(crate) fn start(path: &str, token: &str, config: &str) -> Result<String, Str
         .runtime
         .block_on(core.server.http_ports())
         .ok_or("HTTP server stopped during startup")?;
-    plain_rs::prefs::user::patch(&prefs, plain_rs::prefs::user::UserSettingsPatch { http_port:Some(http as i32), https_port:Some(https as i32), ..Default::default() }).map_err(|e|e.to_string())?;
+    plain_rs::prefs::user::patch(
+        &prefs,
+        plain_rs::prefs::user::UserSettingsPatch {
+            http_port: Some(http as i32),
+            https_port: Some(https as i32),
+            ..Default::default()
+        },
+    )
+    .map_err(|e| e.to_string())?;
     Ok(serde_json::json!({"httpPort":http, "httpsPort":https,
         "generation":core.runtime.block_on(core.server.public_generation()).ok_or("HTTP server stopped during startup")?}).to_string())
 }

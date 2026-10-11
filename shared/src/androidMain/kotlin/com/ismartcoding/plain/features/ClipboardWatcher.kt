@@ -11,7 +11,7 @@ import com.ismartcoding.plain.events.ClipboardChangedData
 import com.ismartcoding.plain.events.ClipboardSyncChangedEvent
 import com.ismartcoding.plain.events.WindowFocusChangedEvent
 import com.ismartcoding.plain.events.EventType
-import com.ismartcoding.plain.events.WebSocketEvent
+import com.ismartcoding.plain.events.HostEvent
 import com.ismartcoding.plain.lib.Channel
 import com.ismartcoding.plain.lib.JsonHelper
 import com.ismartcoding.plain.lib.coIO
@@ -169,7 +169,7 @@ object ClipboardWatcher {
         val entry = ClipboardHelper.record(text, sensitive = sensitive) ?: return
         if (sensitive) return
         sendEvent(
-            WebSocketEvent(
+            HostEvent(
                 EventType.CLIPBOARD_CHANGED,
                 JsonHelper.jsonEncode(
                     ClipboardChangedData(

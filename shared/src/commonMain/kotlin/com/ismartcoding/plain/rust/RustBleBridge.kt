@@ -1,4 +1,4 @@
-package com.ismartcoding.plain.ble
+package com.ismartcoding.plain.rust
 
 internal expect object RustBleBridge {
     fun encoder(data: ByteArray, requestId: Int, response: Boolean, limit: Int): Long
