@@ -48,8 +48,6 @@ object RustSystemProviders {
             this.trash = trash
         } }
     }
-    suspend fun deleteRecords(provider: com.ismartcoding.plain.enums.DataType, ids: Collection<String>): Int =
-        RustContentApi.postJsonOrThrow("system/provider-delete", buildJsonObject { put("provider", provider.name); put("ids", JsonArray(ids.map(::JsonPrimitive))) }).getValue("count").jsonPrimitive.int
     suspend fun packages(query: String, limit: Int, offset: Int, sortBy: FileSortBy): List<DPackageInfo> =
         JsonHelper.jsonDecode(call("packages", query, offset, limit, sortBy).getValue("items").toString())
     suspend fun packageCount(query: String): Int = call("packageCount", query).getValue("count").jsonPrimitive.int

@@ -22,11 +22,6 @@ object RustFileHelper {
     }
     suspend fun delete(path: String): Boolean = RustContentApi.postJsonOrThrow("files/mutate", buildJsonObject { put("action", "delete"); put("path", path) }, longRunning = true).getValue("removed").jsonPrimitive.boolean
 
-    suspend fun stat(path: String): DFile? {
-        val row = RustContentApi.postJsonOrThrow("files/stat", buildJsonObject { put("path", path) }).getValue("file")
-        return if (row is JsonNull) null else decode(row.jsonObject)
-    }
-
     private suspend fun read(root: String, query: String, text: String?, showHidden: Boolean?, sortBy: FileSortBy, offset: Int = 0, limit: Int? = null, countOnly: Boolean = false): JsonObject = RustContentApi.postJsonOrThrow("files/read", buildJsonObject {
         put("root", root)
         put("query", query)

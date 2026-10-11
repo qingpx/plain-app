@@ -44,7 +44,7 @@ import java.io.File
  *  mediaId-based (MediaStore) thumbnails are excluded from disk cache since
  *  they are already served from MediaStore's own cache layer.
  */
-object ThumbnailGenerator : ThumbnailProvider {
+object ThumbnailGenerator {
 
     /**
      * Generate a thumbnail [Bitmap] for the given file.
@@ -151,23 +151,6 @@ object ThumbnailGenerator : ThumbnailProvider {
         }
 
         return bitmap
-    }
-
-    /**
-     * Generate thumbnail JPEG bytes for the given file, using the disk cache.
-     *
-     * Returns null if the file cannot be decoded.
-     */
-    override suspend fun toThumbBytesAsync(
-        context: Context,
-        file: File,
-        width: Int,
-        height: Int,
-        centerCrop: Boolean,
-        mediaId: String,
-        fileName: String,
-    ): ByteArray? {
-        return com.ismartcoding.plain.platform.getThumbnailBytes(file.absolutePath, width, height, centerCrop, mediaId, fileName)
     }
 
     suspend fun decodeBytesAsync(

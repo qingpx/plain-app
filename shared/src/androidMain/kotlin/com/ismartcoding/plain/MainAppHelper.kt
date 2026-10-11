@@ -28,7 +28,6 @@ import dalvik.system.ZipPathValidator
 object MainAppHelper {
 
     fun init(app: Application) {
-        com.ismartcoding.plain.thumbnail.ThumbnailProvider.instance = com.ismartcoding.plain.thumbnail.ThumbnailGenerator
         Prefs.load()
         com.ismartcoding.plain.api.RustContentApi.start()
         CrashHandler.install(app)
