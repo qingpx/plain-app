@@ -16,6 +16,16 @@ object RustNearbyDevices {
 
     internal suspend fun client(id: String): BleGattClient? = mutex.withLock { clients[id] }
 
+    /**
+     * Records the live GATT client for a discovered peer so a later BLE pairing
+     * ([BlePairingHost]) can connect to it. Populated by [BleScanDriver] when a
+     * scan read resolves a device, because Rust — not [seen] — now performs the
+     * DISCOVER read and emits the device.
+     */
+    internal suspend fun rememberClient(id: String, client: BleGattClient) = mutex.withLock {
+        clients[id] = client
+    }
+
     suspend fun scanning() = mutex.withLock {
         apply(call(buildJsonObject {
             put("action", "bleScanning"); put("ble", NearbyViewModel.isBleScanning.value)

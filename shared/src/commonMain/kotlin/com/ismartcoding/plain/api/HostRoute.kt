@@ -13,6 +13,7 @@ enum class HostRoute {
     ChatPicked,
     SharedTransfer,
     BlePairing,
+    BleScan,
     MainGraphql,
     MdnsMulticast,
     DiscoveryAdvertisement,
@@ -38,6 +39,7 @@ fun routeForHostMethod(method: String): HostRoute = when {
     method.startsWith("chatPicked") -> HostRoute.ChatPicked
     method.startsWith("sharedTransfer") -> HostRoute.SharedTransfer
     method.startsWith("blePair") -> HostRoute.BlePairing
+    method == "bleScanRead" -> HostRoute.BleScan
     method.startsWith("mainGraphql") -> HostRoute.MainGraphql
     method == "mdnsMulticast" -> HostRoute.MdnsMulticast
     method == "discoveryFacts" -> HostRoute.DiscoveryAdvertisement
@@ -57,7 +59,7 @@ fun routeForHostMethod(method: String): HostRoute = when {
 internal val ALL_METHOD_NAMES = listOf(
     "fileResourceStream", "thumbnailDecode", "chatPickedFacts", "sharedTransferSend",
     "blePairConnect", "mainGraphql", "mdnsMulticast", "discoveryFacts",
-    "nearbyScanFacts", "pairingNotification", "peerStartAware", "peerTransportSocket",
+    "nearbyScanFacts", "pairingNotification", "bleScanRead", "peerStartAware", "peerTransportSocket",
     "systemAppFacts", "fileMetadataFacts", "audioEngineCommand", "fileTaskScan",
     "mediaAction", "imageIndexStatus", "audioMetadata",
 )

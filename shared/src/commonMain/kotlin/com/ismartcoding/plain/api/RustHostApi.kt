@@ -47,6 +47,7 @@ object RustHostApi {
                                                     HostRoute.ChatPicked -> com.ismartcoding.plain.chat.ChatPickedHost.handle(method, params)
                                                     HostRoute.SharedTransfer -> com.ismartcoding.plain.features.share.SharedTransferHost.handle(exchangeScope, method, params)
                                                     HostRoute.BlePairing -> com.ismartcoding.plain.discover.BlePairingHost.handle(method, params)
+                                                    HostRoute.BleScan -> com.ismartcoding.plain.discover.BleScanDriver.read(params)
                                                     HostRoute.MainGraphql -> com.ismartcoding.plain.platform.HttpServerHost.handle(method, params)
                                                     HostRoute.MdnsMulticast -> com.ismartcoding.plain.discover.MdnsMulticastHost.handle(params)
                                                     HostRoute.DiscoveryAdvertisement -> com.ismartcoding.plain.discover.DiscoveryAdvertisementHost.facts()

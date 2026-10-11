@@ -34,7 +34,7 @@ object PeerCacher {
     //  1. BLE scan response serviceData (byte[0]) — cheap hint, no GATT needed
     //     (used by PeerTransportPrewarmer.refreshAwareFlagFromScan)
     //  2. GATT DISCOVER reply (NearbyDeviceInfo.awareRunning) — authoritative
-    //     (used by PairingTransport.scanAndDiscover, overwrites the scan hint)
+    //     (used by BleScanDriver.read, overwrites the scan hint)
     // When false, WifiAwareTransport skips itself immediately instead of
     // waiting 10s+ for buildLink to time out.
     private val awareRunningMap = mutableStateMapOf<String, Boolean>()

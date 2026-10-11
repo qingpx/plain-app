@@ -25,7 +25,6 @@ object NearbyViewModel {
 
     var isBleScanning = mutableStateOf(false)
 
-    private var bleJob: Job? = null
     private var blePermissionJob: Job? = null
 
     fun startDiscovering() {
@@ -53,29 +52,16 @@ object NearbyViewModel {
     fun startBleScanning() {
         if (isBleScanning.value) return
         if (!isBluetoothReadyToUse()) return
-        bleJob = scope.launchSafe(
-            onDone = {
-                isBleScanning.value = false
-                scope.launchSafe { com.ismartcoding.plain.discover.RustNearbyDevices.scanning() }
-            },
-            onError = {
-                LogCat.e("BLE scan error: ${it.message}", it)
-                isBleScanning.value = false
-            },
-            block = {
-                isBleScanning.value = true
-                scope.launchSafe { com.ismartcoding.plain.discover.RustNearbyDevices.scanning() }
-                PairingTransport.scanAndDiscover().collect { device ->
-                    NearbyViewModel.handleNewDevice(device)
-                }
-            }
-        )
+        isBleScanning.value = true
+        scope.launchSafe { com.ismartcoding.plain.discover.RustNearbyDevices.scanning() }
+        // The App only runs the BLE radio loop; Rust owns the session, drives
+        // GATT reads, and publishes discovered devices over the event stream.
+        com.ismartcoding.plain.discover.BleScanDriver.start()
     }
 
     fun stopBleScanning() {
         isBleScanning.value = false
-        bleJob?.cancel()
-        bleJob = null
+        com.ismartcoding.plain.discover.BleScanDriver.stop()
         scope.launchSafe { com.ismartcoding.plain.discover.RustNearbyDevices.scanning() }
     }
 
@@ -109,10 +95,6 @@ object NearbyViewModel {
             NearbyItemStatus.PAIRING -> if (isPaired) NearbyItemStatus.PAIRED else NearbyItemStatus.PAIRING
             else -> if (isPaired) NearbyItemStatus.PAIRED else NearbyItemStatus.UNPAIRED
         }
-    }
-
-    suspend fun handleNewDevice(incoming: DNearbyDevice) {
-        com.ismartcoding.plain.discover.RustNearbyDevices.seen(incoming)
     }
 
     fun handlePairingSuccess(deviceId: String) {
