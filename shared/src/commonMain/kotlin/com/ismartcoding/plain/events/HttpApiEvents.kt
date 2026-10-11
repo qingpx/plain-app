@@ -15,6 +15,4 @@ class HEnableImageSearchEvent : HEvent()
 class HDisableImageSearchEvent : HEvent()
 class HCancelImageModelDownloadEvent : HEvent()
 
-class HCancelNotificationsEvent(val ids: Set<String>) : HEvent()
-
 data class HDownloadTaskDoneEvent(val downloadTask: DownloadTask) : HEvent()

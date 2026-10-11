@@ -53,13 +53,7 @@ object RustSystemProviders {
     suspend fun packageCount(query: String): Int = call("packageCount", query).getValue("count").jsonPrimitive.int
     suspend fun notifications(query: String, offset: Int, limit: Int): List<DNotification> =
         JsonHelper.jsonDecode(call("notifications", query, offset, limit).getValue("items").toString())
-    suspend fun deleteNotifications(ids: List<String>): Int = RustContentApi.postJsonOrThrow("system/notification", buildJsonObject {
-        put("action", "delete"); put("ids", JsonArray(ids.map(::JsonPrimitive)))
-    }).getValue("count").jsonPrimitive.int
-    suspend fun replyNotification(id: String, actionIndex: Int, text: String): Boolean = RustContentApi.postJsonOrThrow("system/notification", buildJsonObject {
-        put("action", "reply"); put("id", id); put("actionIndex", actionIndex); put("text", text)
-    }).getValue("ok").jsonPrimitive.boolean
-    suspend fun notificationCount(query: String): Int = call("notificationCount", query).getValue("count").jsonPrimitive.int
+suspend fun notificationCount(query: String): Int = call("notificationCount", query).getValue("count").jsonPrimitive.int
 
     suspend fun mediaBuckets(dataType: DataType): List<DMediaBucket> {
         val facts = com.ismartcoding.plain.platform.mediaBucketItemFacts(dataType)

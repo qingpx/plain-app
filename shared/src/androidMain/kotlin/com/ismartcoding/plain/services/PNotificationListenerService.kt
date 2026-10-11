@@ -18,7 +18,6 @@ import com.ismartcoding.plain.enums.AppFeatureType
 import com.ismartcoding.plain.enums.has
 import com.ismartcoding.plain.extensions.toDNotification
 import com.ismartcoding.plain.features.getGrantedWebPermissionsAsync
-import com.ismartcoding.plain.events.HCancelNotificationsEvent
 import com.ismartcoding.plain.platform.Permission
 import com.ismartcoding.plain.platform.isGranted
 import com.ismartcoding.plain.platform.isEnabledAsync
@@ -132,18 +131,6 @@ class PNotificationListenerService : NotificationListenerService() {
                     JsonHelper.jsonEncode(getGrantedWebPermissionsAsync()),
                 ),
             )
-        }
-
-        try {
-
-            events.add(receiveEventHandler<HCancelNotificationsEvent> { event ->
-                com.ismartcoding.plain.lib.coIO {
-                    runCatching { com.ismartcoding.plain.features.system.RustSystemProviders.deleteNotifications(event.ids.toList()) }
-                        .onFailure { LogCat.e("Error canceling notifications: ${it.message}") }
-                }
-            })
-        } catch (ex: Exception) {
-            LogCat.e("Error setting up event handlers: ${ex.message}")
         }
     }
 
